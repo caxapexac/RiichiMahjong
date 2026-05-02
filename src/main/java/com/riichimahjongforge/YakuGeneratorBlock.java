@@ -1,0 +1,134 @@
+package com.riichimahjongforge;
+
+import com.riichimahjongforge.menu.YakuGeneratorMenu;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.Nullable;
+
+@SuppressWarnings("deprecation")
+public class YakuGeneratorBlock extends BaseEntityBlock {
+
+    public enum Tier {
+        TIER_1(1, 24),
+        TIER_2(2, 40),
+        TIER_3(3, 70);
+
+        private final int index;
+        private final int drawLimit;
+
+        Tier(int index, int drawLimit) {
+            this.index = index;
+            this.drawLimit = drawLimit;
+        }
+
+        public int index() {
+            return index;
+        }
+
+        public int drawLimit() {
+            return drawLimit;
+        }
+    }
+
+    private static final VoxelShape SHAPE = Shapes.or(
+            box(1.0, 0.0, 1.0, 15.0, 10.0, 15.0),
+            box(15.0, 0.0, 2.0, 16.0, 9.0, 14.0),
+            box(0.0, 0.0, 2.0, 1.0, 9.0, 14.0),
+            box(2.0, 0.0, 15.0, 14.0, 9.0, 16.0),
+            box(2.0, 0.0, 0.0, 14.0, 9.0, 1.0),
+            box(5.5, 10.0, 4.5, 10.5, 12.0, 11.5));
+
+    private final Tier tier;
+
+    public YakuGeneratorBlock(Properties properties, Tier tier) {
+        super(properties);
+        this.tier = tier;
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
+    }
+
+    @Override
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+        return SHAPE;
+    }
+
+    @Override
+    public InteractionResult use(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hit) {
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return InteractionResult.PASS;
+        }
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (!(blockEntity instanceof YakuGeneratorBlockEntity machine)) {
+            return InteractionResult.PASS;
+        }
+        NetworkHooks.openScreen(
+                serverPlayer,
+                new SimpleMenuProvider(
+                        (windowId, inventory, p) -> new YakuGeneratorMenu(windowId, inventory, machine),
+                        Component.translatable("riichi_mahjong_forge.screen.yaku_generator.title")),
+                buffer -> buffer.writeBlockPos(pos));
+        return InteractionResult.CONSUME;
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new YakuGeneratorBlockEntity(pos, state);
+    }
+
+    public Tier tier() {
+        return tier;
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (level.isClientSide()) {
+            return null;
+        }
+        return createTickerHelper(
+                type,
+                RiichiMahjongForgeMod.YAKU_GENERATOR_BLOCK_ENTITY.get(),
+                YakuGeneratorBlockEntity::serverTick);
+    }
+}

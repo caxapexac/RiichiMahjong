@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/yakuhai_jikaze",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_wind_south"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.yakuhai_bakaze"
+    },
+    "description": {
+      "text": "Win with a triplet of the round wind."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

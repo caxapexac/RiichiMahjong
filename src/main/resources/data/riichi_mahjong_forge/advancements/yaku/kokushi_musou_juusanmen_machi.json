@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/kokushi_musou",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_wind_north"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.kokushi_musou_juusanmen_machi"
+    },
+    "description": {
+      "text": "Win Kokushi on a 13-sided wait."
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/root",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:mahjong_red_dragon_soul"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.yakuman"
+    },
+    "description": {
+      "text": "Win any yakuman hand."
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/houtei",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_man_1"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.nagashi_mangan"
+    },
+    "description": {
+      "text": "Reach exhaustive draw with only terminal and honor discards."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

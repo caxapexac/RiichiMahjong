@@ -1,0 +1,7 @@
+﻿{
+  "variants": {
+    "": {
+      "model": "riichi_mahjong_forge:block/yaku_generator"
+    }
+  }
+}

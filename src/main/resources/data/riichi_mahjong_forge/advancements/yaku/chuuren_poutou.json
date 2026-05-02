@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/chinitsu",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_man_9"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.chuuren_poutou"
+    },
+    "description": {
+      "text": "Win with the Nine Gates pattern."
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

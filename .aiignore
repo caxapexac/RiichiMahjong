@@ -1,0 +1,28 @@
+# Gradle / Forge build output
+build/
+.gradle/
+
+# Dev client/server working dirs (world saves, logs, caches)
+run/
+
+# IDE
+.idea/
+out/
+*.ipr
+*.iws
+*.iml
+
+# Eclipse
+eclipse/
+bin/
+.settings/
+.metadata/
+.classpath
+.project
+*.launch
+
+# Vendored / local deps (not primary source)
+_mahjong4j_vendor/
+
+# Forge MDK noise
+forge*changelog.txt

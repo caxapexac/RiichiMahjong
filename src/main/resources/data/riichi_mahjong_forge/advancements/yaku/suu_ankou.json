@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/sanankou",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_wind_west"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.suu_ankou"
+    },
+    "description": {
+      "text": "Win with four concealed triplets."
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

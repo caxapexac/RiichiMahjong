@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/chiitoitsu",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_wind_east"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.kokushi_musou"
+    },
+    "description": {
+      "text": "Win with all thirteen terminals and honors."
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

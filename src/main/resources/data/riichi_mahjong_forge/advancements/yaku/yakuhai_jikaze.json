@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/root",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_wind_east"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.yakuhai_jikaze"
+    },
+    "description": {
+      "text": "Win with a triplet of your seat wind."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

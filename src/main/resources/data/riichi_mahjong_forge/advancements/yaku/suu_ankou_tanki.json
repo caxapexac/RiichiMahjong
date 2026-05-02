@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/suu_ankou",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_wind_west"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.suu_ankou_tanki"
+    },
+    "description": {
+      "text": "Win Suu Ankou on a single-tile pair wait."
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

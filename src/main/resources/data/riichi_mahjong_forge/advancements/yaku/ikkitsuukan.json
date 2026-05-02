@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/sanshoku_doujun",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_man_1"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.ikkitsuukan"
+    },
+    "description": {
+      "text": "Complete 123, 456, and 789 in one suit."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

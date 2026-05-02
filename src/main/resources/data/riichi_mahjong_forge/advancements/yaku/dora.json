@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/root",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:mahjong_red_dragon_soul"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.dora"
+    },
+    "description": {
+      "text": "Win while scoring at least one dora."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

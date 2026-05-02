@@ -1,0 +1,23 @@
+﻿{
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:mahjong_table"
+    },
+    "title": {
+      "text": "Yaku Almanac"
+    },
+    "description": {
+      "text": "Win with different yaku to fill this board."
+    },
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

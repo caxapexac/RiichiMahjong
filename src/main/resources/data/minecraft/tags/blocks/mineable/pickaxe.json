@@ -1,0 +1,9 @@
+﻿{
+  "replace": false,
+  "values": [
+    "riichi_mahjong_forge:mahjong_altar",
+    "riichi_mahjong_forge:yaku_generator_tier_1",
+    "riichi_mahjong_forge:yaku_generator_tier_2",
+    "riichi_mahjong_forge:yaku_generator_tier_3"
+  ]
+}

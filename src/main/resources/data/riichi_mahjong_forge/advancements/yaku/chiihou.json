@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/renhou",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_wind_south"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.chiihou"
+    },
+    "description": {
+      "text": "Non-dealer wins by first self-draw."
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

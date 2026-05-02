@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/toitoi",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_sou_7"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.sanshoku_doukou"
+    },
+    "description": {
+      "text": "Make the same triplet in all three suits."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

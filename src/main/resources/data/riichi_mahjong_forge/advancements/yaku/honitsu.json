@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/root",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_sou_5"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.honitsu"
+    },
+    "description": {
+      "text": "Win with one suit plus honors."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/root",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_pin_5"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.menzen_tsumo"
+    },
+    "description": {
+      "text": "Self-draw a winning tile with a closed hand."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/haitei",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_pin_9"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.houtei"
+    },
+    "description": {
+      "text": "Win on the final discard of the hand."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

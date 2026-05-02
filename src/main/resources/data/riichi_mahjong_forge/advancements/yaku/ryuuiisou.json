@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/chinitsu",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_dragon_green"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.ryuuiisou"
+    },
+    "description": {
+      "text": "Win with only green tiles."
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/shousangen",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_dragon_red"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.daisangen"
+    },
+    "description": {
+      "text": "Win with all three dragon triplets."
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

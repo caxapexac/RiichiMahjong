@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/akadora",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:mahjong_red_dragon_soul"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.uradora"
+    },
+    "description": {
+      "text": "Win riichi and reveal at least one ura dora."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

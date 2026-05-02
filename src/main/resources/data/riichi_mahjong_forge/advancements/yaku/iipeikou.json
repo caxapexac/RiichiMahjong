@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/pinfu",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_pin_3"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.iipeikou"
+    },
+    "description": {
+      "text": "Make one pair of identical sequences."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/riichi",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:mahjong_riichi_stick"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.ippatsu"
+    },
+    "description": {
+      "text": "Win within one uninterrupted turn after riichi."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

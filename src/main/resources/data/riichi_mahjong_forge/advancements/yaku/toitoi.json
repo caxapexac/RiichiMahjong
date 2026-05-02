@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/root",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_dragon_red"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.toitoi"
+    },
+    "description": {
+      "text": "Win with an all triplets hand."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

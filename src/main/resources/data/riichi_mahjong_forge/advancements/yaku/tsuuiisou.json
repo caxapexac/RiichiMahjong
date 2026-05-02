@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/honroutou",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_dragon_white"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.tsuuiisou"
+    },
+    "description": {
+      "text": "Win with honor tiles only."
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/chuuren_poutou",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_man_9"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.junsei_chuuren_poutou"
+    },
+    "description": {
+      "text": "Win Pure Nine Gates on the true 9-sided wait."
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

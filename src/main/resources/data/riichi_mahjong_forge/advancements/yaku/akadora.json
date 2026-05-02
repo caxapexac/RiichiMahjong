@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/dora",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_man_5"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.akadora"
+    },
+    "description": {
+      "text": "Win with at least one red five bonus."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/iipeikou",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_pin_7"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.ryanpeikou"
+    },
+    "description": {
+      "text": "Make two pairs of identical sequences."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

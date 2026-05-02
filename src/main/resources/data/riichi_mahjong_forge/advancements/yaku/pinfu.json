@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/tanyao",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_sou_2"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.pinfu"
+    },
+    "description": {
+      "text": "Win a no-points hand with all sequences."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

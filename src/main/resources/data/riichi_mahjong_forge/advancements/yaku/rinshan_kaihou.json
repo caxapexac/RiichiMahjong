@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong_forge:yaku/root",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "riichi_mahjong_forge:tile_wind_north"
+    },
+    "title": {
+      "translate": "riichi_mahjong_forge.yaku.rinshan_kaihou"
+    },
+    "description": {
+      "text": "Win on a dead-wall draw after a kan."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

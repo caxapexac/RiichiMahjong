@@ -1,0 +1,13 @@
+{
+  "type": "riichi_mahjong_forge:mahjong_altar",
+  "min_han": 2,
+  "ingredients": [
+    {
+      "item": "riichi_mahjong_forge:tile_dragon_white"
+    }
+  ],
+  "result": {
+    "item": "riichi_mahjong_forge:mahjong_red_dragon_soul",
+    "count": 1
+  }
+}
