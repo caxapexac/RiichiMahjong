@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.nagashi_mangan"
     },
     "description": {
-      "text": "Reach exhaustive draw with only terminal and honor discards."
+      "translate": "riichi_mahjong_forge.advancement.nagashi_mangan.description"
     },
     "frame": "goal",
     "show_toast": true,

@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.chiihou"
     },
     "description": {
-      "text": "Non-dealer wins by first self-draw."
+      "translate": "riichi_mahjong_forge.advancement.chiihou.description"
     },
     "frame": "challenge",
     "show_toast": true,

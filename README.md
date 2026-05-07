@@ -1,6 +1,6 @@
 # Riichi Mahjong Forge
 
-Riichi Mahjong Forge adds a fully playable Riichi Mahjong table to Minecraft. Play with up to three other players (or simple bots) into classic Riichi Mahjong.
+Riichi Mahjong Forge adds a fully playable Riichi Mahjong table to Minecraft. Play with up to three other players (or simple bots).
 
 ## Features
 
@@ -15,8 +15,6 @@ Riichi Mahjong Forge adds a fully playable Riichi Mahjong table to Minecraft. Pl
 
 ## Not yet implemented
 - 2-3 players mode
-- double riichi
-- aka dora
 
 
 ## Dependencies
@@ -28,5 +26,4 @@ No extra dependencies, recipes are balanced for vanilla
 
 ## Credits
 
-Uses [mahjong4j](https://github.com/mahjong4j/mahjong4j) for yaku evaluation.
 Btw Fabric also has mahjong! [MahjongCraft](https://www.curseforge.com/minecraft/mc-mods/mahjongcraft).

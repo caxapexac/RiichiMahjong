@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.kokushi_musou_juusanmen_machi"
     },
     "description": {
-      "text": "Win Kokushi on a 13-sided wait."
+      "translate": "riichi_mahjong_forge.advancement.kokushi_musou_juusanmen_machi.description"
     },
     "frame": "challenge",
     "show_toast": true,

@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.junsei_chuuren_poutou"
     },
     "description": {
-      "text": "Win Pure Nine Gates on the true 9-sided wait."
+      "translate": "riichi_mahjong_forge.advancement.junsei_chuuren_poutou.description"
     },
     "frame": "challenge",
     "show_toast": true,

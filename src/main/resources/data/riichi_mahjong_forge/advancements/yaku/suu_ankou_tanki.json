@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.suu_ankou_tanki"
     },
     "description": {
-      "text": "Win Suu Ankou on a single-tile pair wait."
+      "translate": "riichi_mahjong_forge.advancement.suu_ankou_tanki.description"
     },
     "frame": "challenge",
     "show_toast": true,

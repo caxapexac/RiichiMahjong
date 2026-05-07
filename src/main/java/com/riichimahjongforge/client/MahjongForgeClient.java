@@ -1,14 +1,23 @@
 package com.riichimahjongforge.client;
 
-import com.riichimahjongforge.MahjongTileItems;
+import com.riichimahjongforge.mahjongcore.MahjongTileItems;
 import com.riichimahjongforge.RiichiMahjongForgeMod;
-import com.riichimahjongforge.network.S2CMatchLifecyclePacket;
+import com.riichimahjongforge.mahjongtools.MahjongRiichiStickEntity;
+import com.riichimahjongforge.yakugenerator.client.YakuGeneratorScreen;
+import com.riichimahjongforge.mahjongaltar.client.MahjongAltarBlockEntityRenderer;
+import com.riichimahjongforge.mahjongsolitaire.client.MahjongSolitaireHoverHintClient;
+import com.riichimahjongforge.mahjongsolitaire.client.MahjongSolitaireRenderer;
+import com.riichimahjongforge.mahjongtable.client.MahjongTableHoverHintClient;
+import com.riichimahjongforge.mahjongtable.client.MahjongTableRenderer;
+import com.riichimahjongforge.mahjongtable.client.MahjongTableScreen;
+import com.riichimahjongforge.mahjongtable.client.MahjongTableSettingsScreen;
 import java.util.ArrayList;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,12 +34,13 @@ public final class MahjongForgeClient {
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             MenuScreens.register(
-                    RiichiMahjongForgeMod.MAHJONG_TABLE_SETTINGS.get(), MahjongTableSettingsScreen::new);
+                    RiichiMahjongForgeMod.MAHJONG_TABLE_MENU.get(), MahjongTableScreen::new);
             MenuScreens.register(
-                    RiichiMahjongForgeMod.MAHJONG_TABLE_INVENTORY_MENU.get(), MahjongTableInventoryScreen::new);
+                    RiichiMahjongForgeMod.MAHJONG_TABLE_SETTINGS_MENU.get(), MahjongTableSettingsScreen::new);
+            MahjongTableHoverHintClient.register();
+            MahjongSolitaireHoverHintClient.register();
             MenuScreens.register(
                     RiichiMahjongForgeMod.YAKU_GENERATOR_MENU.get(), YakuGeneratorScreen::new);
-            S2CMatchLifecyclePacket.registerClientHandler(MatchLifecycleClientHandler::handle);
             ArrayList<Block> tileBlocks = new ArrayList<>(MahjongTileItems.allTileBlocks());
             for (Block block : tileBlocks) {
                 ItemBlockRenderTypes.setRenderLayer(block, RenderType.cutout());
@@ -41,12 +51,13 @@ public final class MahjongForgeClient {
     @SubscribeEvent
     public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(
-                RiichiMahjongForgeMod.MAHJONG_TABLE_BLOCK_ENTITY.get(), MahjongTableBlockEntityRenderer::new);
+                RiichiMahjongForgeMod.MAHJONG_TABLE_BLOCK_ENTITY.get(), MahjongTableRenderer::new);
         event.registerBlockEntityRenderer(
                 RiichiMahjongForgeMod.MAHJONG_ALTAR_BLOCK_ENTITY.get(), MahjongAltarBlockEntityRenderer::new);
-        //noinspection unchecked
+        event.registerBlockEntityRenderer(
+                RiichiMahjongForgeMod.MAHJONG_SOLITAIRE_BLOCK_ENTITY.get(), MahjongSolitaireRenderer::new);
         event.registerEntityRenderer(
-                RiichiMahjongForgeMod.RIICHI_STICK_ENTITY.get(),
-                (net.minecraft.client.renderer.entity.EntityRendererProvider) ThrownItemRenderer::new);
+                RiichiMahjongForgeMod.MAHJONG_RIICHI_STICK_ENTITY.get(),
+                (EntityRendererProvider<MahjongRiichiStickEntity>) ThrownItemRenderer::new);
     }
 }

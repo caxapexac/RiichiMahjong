@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.ryanpeikou"
     },
     "description": {
-      "text": "Make two pairs of identical sequences."
+      "translate": "riichi_mahjong_forge.advancement.ryanpeikou.description"
     },
     "frame": "goal",
     "show_toast": true,

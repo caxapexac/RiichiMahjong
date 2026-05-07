@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.shousuushii"
     },
     "description": {
-      "text": "Win with three wind triplets and a wind pair."
+      "translate": "riichi_mahjong_forge.advancement.shousuushii.description"
     },
     "frame": "challenge",
     "show_toast": true,

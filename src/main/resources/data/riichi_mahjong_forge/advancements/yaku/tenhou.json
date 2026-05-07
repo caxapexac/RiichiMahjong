@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.tenhou"
     },
     "description": {
-      "text": "Dealer wins on the initial draw."
+      "translate": "riichi_mahjong_forge.advancement.tenhou.description"
     },
     "frame": "challenge",
     "show_toast": true,

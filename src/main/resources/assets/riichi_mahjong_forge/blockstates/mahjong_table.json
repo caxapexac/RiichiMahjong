@@ -1,9 +1,0 @@
-{
-  "multipart": [
-    {
-      "apply": {
-        "model": "riichi_mahjong_forge:block/mahjong_table"
-      }
-    }
-  ]
-}

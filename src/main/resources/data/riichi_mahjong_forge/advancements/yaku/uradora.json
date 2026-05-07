@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.uradora"
     },
     "description": {
-      "text": "Win riichi and reveal at least one ura dora."
+      "translate": "riichi_mahjong_forge.advancement.uradora.description"
     },
     "frame": "goal",
     "show_toast": true,

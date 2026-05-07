@@ -17,6 +17,12 @@ out
 build
 .gradle
 
+# tenhou historical fixtures (downloaded locally, not committed)
+src/test/resources/com/themahjong/replay/tenhou/2019/
+scraw2019.zip
+tenhou2019.db
+houou-logs/
+
 # other
 eclipse
 run

@@ -14,7 +14,7 @@
     "R": { "item": "minecraft:redstone_block" }
   },
   "result": {
-    "item": "riichi_mahjong_forge:mahjong_table",
+    "item": "riichi_mahjong_forge:mahjong_table_new",
     "count": 1
   }
 }

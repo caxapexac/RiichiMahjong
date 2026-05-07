@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.chuuren_poutou"
     },
     "description": {
-      "text": "Win with the Nine Gates pattern."
+      "translate": "riichi_mahjong_forge.advancement.chuuren_poutou.description"
     },
     "frame": "challenge",
     "show_toast": true,

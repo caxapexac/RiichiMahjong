@@ -30,7 +30,7 @@ displayURL="https://github.com/caxapexac/RiichiMahjongForge"
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="META-INF/logo.png"
 # A text field displayed in the mod UI
-credits="Uses mahjong4j by mahjong4j contributors (https://github.com/mahjong4j/mahjong4j)"
+credits=""
 # A text field displayed in the mod UI
 authors="${mod_authors}" #optional
 # Display Test controls the display for your mod in the server connection screen

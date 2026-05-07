@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.yakuman"
     },
     "description": {
-      "text": "Win any yakuman hand."
+      "translate": "riichi_mahjong_forge.advancement.yakuman.description"
     },
     "frame": "challenge",
     "show_toast": true,

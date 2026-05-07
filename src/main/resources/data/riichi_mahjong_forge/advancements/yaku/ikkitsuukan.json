@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.ikkitsuukan"
     },
     "description": {
-      "text": "Complete 123, 456, and 789 in one suit."
+      "translate": "riichi_mahjong_forge.advancement.ikkitsuukan.description"
     },
     "frame": "goal",
     "show_toast": true,

@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.haitei"
     },
     "description": {
-      "text": "Win by self-drawing the last live-wall tile."
+      "translate": "riichi_mahjong_forge.advancement.haitei.description"
     },
     "frame": "goal",
     "show_toast": true,

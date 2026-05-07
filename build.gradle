@@ -127,6 +127,15 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    // Modrinth Maven — pulls mod jars by slug + version-number string.
+    // Lighter to use than CurseMaven for mods that publish here.
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
 
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:flat_dir_resolver
@@ -144,7 +153,26 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api")
     runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}")
-    runtimeOnly fg.deobf("curse.maven:carry-on-274259:4882500")
+    //runtimeOnly fg.deobf("curse.maven:carry-on-274259:4882500")
+    //runtimeOnly fg.deobf("curse.maven:inventory-hud-forge-357540:5639966")
+
+    // Automation testbed mods (runtime only; not compiled against).
+    // Functional Storage = drawer-style item logistics. Requires Titanium.
+    runtimeOnly fg.deobf("maven.modrinth:titanium:1.20.1-3.8.34")
+    runtimeOnly fg.deobf("maven.modrinth:functional-storage:1.20.1-1.2.13")
+    // Thermal Dynamics = item/fluid/energy ducts. Requires CoFH Core + Thermal Foundation.
+    // Versions are kept in lockstep with Thermal Dynamics 11.0.1 (May 2024 wave).
+    runtimeOnly fg.deobf("maven.modrinth:cofh-core:11.0.2")
+    runtimeOnly fg.deobf("maven.modrinth:thermal-foundation:11.0.2")
+    runtimeOnly fg.deobf("maven.modrinth:thermal-dynamics:11.0.1")
+    // Jade — looking-at tooltips (block + entity inspect) for debug QoL.
+    runtimeOnly fg.deobf("maven.modrinth:jade:11.13.2+forge")
+    // Pipez — light-weight item/fluid/energy pipes. Thermal Dynamics 11.x for
+    // 1.20.1 hasn't shipped item ducts yet (still WIP), so we use Pipez for
+    // item transport in the automation testbed.
+    runtimeOnly fg.deobf("maven.modrinth:pipez:forge-1.20.1-1.2.26")
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
@@ -160,6 +188,59 @@ dependencies {
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
+}
+
+tasks.named('test', Test).configure {
+    useJUnitPlatform()
+
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat 'full'
+        showStandardStreams = false
+    }
+}
+
+def themahjongTestLogging = {
+    events 'failed'
+    exceptionFormat 'full'
+    showExceptions true
+    showCauses true
+    showStackTraces false
+    showStandardStreams false
+}
+
+tasks.register('testTheMahjong', Test) {
+    group = 'verification'
+    description = 'Runs unit tests for the themahjong library.'
+
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        excludeTags 'full-replay'
+    }
+    include 'com/themahjong/**'
+    testLogging themahjongTestLogging
+}
+
+tasks.register('testTheMahjongFull', Test) {
+    group = 'verification'
+    description = 'Runs full replay tests against the downloaded 2019 Tenhou dataset (requires scripts/download-tenhou-2019.ps1). Run ONLY when explicitly asked to.'
+
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'full-replay'
+    }
+    include 'com/themahjong/**'
+    testLogging themahjongTestLogging
+}
+
+tasks.register('runTheMahjongCli', JavaExec) {
+    group = 'application'
+    description = 'Runs the themahjong CLI smoke execution.'
+
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.themahjong.TheMahjongCli'
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

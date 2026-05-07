@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.suu_ankou"
     },
     "description": {
-      "text": "Win with four concealed triplets."
+      "translate": "riichi_mahjong_forge.advancement.suu_ankou.description"
     },
     "frame": "challenge",
     "show_toast": true,

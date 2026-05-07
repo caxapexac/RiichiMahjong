@@ -1,13 +1,13 @@
-﻿{
+{
   "display": {
     "icon": {
-      "item": "riichi_mahjong_forge:mahjong_table"
+      "item": "riichi_mahjong_forge:mahjong_table_new"
     },
     "title": {
-      "text": "Yaku Almanac"
+      "translate": "riichi_mahjong_forge.advancement.root.title"
     },
     "description": {
-      "text": "Win with different yaku to fill this board."
+      "translate": "riichi_mahjong_forge.advancement.root.description"
     },
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "frame": "task",

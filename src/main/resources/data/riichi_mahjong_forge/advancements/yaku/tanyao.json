@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.tanyao"
     },
     "description": {
-      "text": "Win with only simples (2 to 8)."
+      "translate": "riichi_mahjong_forge.advancement.tanyao.description"
     },
     "frame": "task",
     "show_toast": true,

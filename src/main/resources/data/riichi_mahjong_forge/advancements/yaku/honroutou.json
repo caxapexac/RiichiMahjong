@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.honroutou"
     },
     "description": {
-      "text": "Use only terminals and honors."
+      "translate": "riichi_mahjong_forge.advancement.honroutou.description"
     },
     "frame": "goal",
     "show_toast": true,

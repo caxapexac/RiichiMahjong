@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.daisangen"
     },
     "description": {
-      "text": "Win with all three dragon triplets."
+      "translate": "riichi_mahjong_forge.advancement.daisangen.description"
     },
     "frame": "challenge",
     "show_toast": true,

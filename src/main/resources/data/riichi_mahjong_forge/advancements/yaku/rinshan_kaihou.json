@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.rinshan_kaihou"
     },
     "description": {
-      "text": "Win on a dead-wall draw after a kan."
+      "translate": "riichi_mahjong_forge.advancement.rinshan_kaihou.description"
     },
     "frame": "goal",
     "show_toast": true,

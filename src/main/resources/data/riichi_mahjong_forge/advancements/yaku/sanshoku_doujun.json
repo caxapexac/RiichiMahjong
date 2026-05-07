@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.sanshoku_doujun"
     },
     "description": {
-      "text": "Make the same sequence in all three suits."
+      "translate": "riichi_mahjong_forge.advancement.sanshoku_doujun.description"
     },
     "frame": "goal",
     "show_toast": true,

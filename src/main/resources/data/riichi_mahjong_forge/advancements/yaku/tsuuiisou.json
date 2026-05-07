@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.tsuuiisou"
     },
     "description": {
-      "text": "Win with honor tiles only."
+      "translate": "riichi_mahjong_forge.advancement.tsuuiisou.description"
     },
     "frame": "challenge",
     "show_toast": true,

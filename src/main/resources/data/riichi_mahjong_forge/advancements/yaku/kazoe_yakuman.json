@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.kazoe_yakuman"
     },
     "description": {
-      "text": "Reach 13+ han without a natural yakuman."
+      "translate": "riichi_mahjong_forge.advancement.kazoe_yakuman.description"
     },
     "frame": "challenge",
     "show_toast": true,

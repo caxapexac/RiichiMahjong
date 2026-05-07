@@ -13,7 +13,7 @@
       "translate": "riichi_mahjong_forge.yaku.renhou"
     },
     "description": {
-      "text": "Win by ron before your first draw."
+      "translate": "riichi_mahjong_forge.advancement.renhou.description"
     },
     "frame": "challenge",
     "show_toast": true,
