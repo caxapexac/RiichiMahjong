@@ -24,7 +24,7 @@ side = "BOTH"
 [[dependencies.riichi_mahjong]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.1,)"
+versionRange = "[1.21.1,1.21.2)"
 ordering = "NONE"
 side = "BOTH"
 
