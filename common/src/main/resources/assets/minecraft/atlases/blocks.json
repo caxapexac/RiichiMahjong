@@ -1,0 +1,14 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "riichi_mahjong:block/liquid_experience_still",
+      "sprite": "riichi_mahjong:block/liquid_experience_still"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "riichi_mahjong:block/liquid_experience_flow",
+      "sprite": "riichi_mahjong:block/liquid_experience_flow"
+    }
+  ]
+}

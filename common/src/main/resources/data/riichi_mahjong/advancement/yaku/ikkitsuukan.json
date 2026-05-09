@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/sanshoku_doujun",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_man_1"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.ikkitsuukan"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.ikkitsuukan.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

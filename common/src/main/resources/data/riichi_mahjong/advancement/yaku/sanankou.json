@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/toitoi",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_wind_west"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.sanankou"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.sanankou.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

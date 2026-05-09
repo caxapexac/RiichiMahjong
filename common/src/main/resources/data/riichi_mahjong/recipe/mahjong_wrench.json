@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GRG",
+    "GGG",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "R": {
+      "item": "riichi_mahjong:tile_dragon_red"
+    }
+  },
+  "result": {
+    "id": "riichi_mahjong:mahjong_wrench"
+  }
+}

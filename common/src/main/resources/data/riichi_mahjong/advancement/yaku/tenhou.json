@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/chiihou",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_wind_east"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.tenhou"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.tenhou.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

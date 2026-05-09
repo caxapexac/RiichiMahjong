@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/kokushi_musou",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_wind_north"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.kokushi_musou_juusanmen_machi"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.kokushi_musou_juusanmen_machi.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

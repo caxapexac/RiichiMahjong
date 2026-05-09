@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "riichi_mahjong",
+  "version": "${version}",
+  "name": "Riichi Mahjong",
+  "description": "Multiplayer Riichi Mahjong. Contains extra features and semi-progression.",
+  "authors": [
+    "caxapexac"
+  ],
+  "contact": {
+    "homepage": "https://github.com/caxapexac/RiichiMahjong",
+    "sources": "https://github.com/caxapexac/RiichiMahjong",
+    "issues": "https://github.com/caxapexac/RiichiMahjong/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/riichi_mahjong/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.riichimahjong.fabric.RiichiMahjongFabric"
+    ],
+    "client": [
+      "com.riichimahjong.fabric.client.RiichiMahjongFabricClient"
+    ]
+  },
+  "mixins": [
+    "riichi_mahjong.mixins.json",
+    "riichi_mahjong.fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.2",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "architectury": ">=13.0.8",
+    "fabric-api": "*"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/pinfu",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_pin_3"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.iipeikou"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.iipeikou.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/haitei",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_pin_9"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.houtei"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.houtei.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

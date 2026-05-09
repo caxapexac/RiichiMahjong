@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "riichi_mahjong:item/mahjong_table_record"
+  }
+}

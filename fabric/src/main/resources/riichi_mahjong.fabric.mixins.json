@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "com.riichimahjong.fabric.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+    "GameRendererFovMixin",
+    "HudHideNormalizeFovMixin",
+    "InventoryHideNormalizeFovMixin"
+  ],
+  "mixins": [
+    "MobFinalizeSpawnMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

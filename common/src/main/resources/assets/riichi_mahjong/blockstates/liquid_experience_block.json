@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "level=0":  { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=1":  { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=2":  { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=3":  { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=4":  { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=5":  { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=6":  { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=7":  { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=8":  { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=9":  { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=10": { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=11": { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=12": { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=13": { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=14": { "model": "riichi_mahjong:block/liquid_experience_block" },
+    "level=15": { "model": "riichi_mahjong:block/liquid_experience_block" }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/root",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:mahjong_red_dragon_soul"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.yakuman"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.yakuman.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

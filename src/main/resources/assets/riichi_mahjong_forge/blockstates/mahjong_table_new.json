@@ -1,8 +1,0 @@
-{
-  "multipart": [
-    {"when": {"facing": "north"}, "apply": {"model": "riichi_mahjong_forge:block/mahjong_table"}},
-    {"when": {"facing": "east"},  "apply": {"model": "riichi_mahjong_forge:block/mahjong_table", "y": 90}},
-    {"when": {"facing": "south"}, "apply": {"model": "riichi_mahjong_forge:block/mahjong_table", "y": 180}},
-    {"when": {"facing": "west"},  "apply": {"model": "riichi_mahjong_forge:block/mahjong_table", "y": 270}}
-  ]
-}

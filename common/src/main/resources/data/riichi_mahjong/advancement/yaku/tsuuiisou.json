@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/honroutou",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_dragon_white"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.tsuuiisou"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.tsuuiisou.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

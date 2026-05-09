@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/houtei",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_man_1"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.nagashi_mangan"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.nagashi_mangan.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

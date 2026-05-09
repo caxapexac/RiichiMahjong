@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/chiitoitsu",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_wind_east"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.kokushi_musou"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.kokushi_musou.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

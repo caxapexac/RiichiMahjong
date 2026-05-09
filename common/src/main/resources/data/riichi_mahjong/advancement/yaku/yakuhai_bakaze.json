@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/yakuhai_jikaze",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_wind_south"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.yakuhai_bakaze"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.yakuhai_bakaze.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/yakuhai_haku",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_dragon_green"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.yakuhai_hatsu"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.yakuhai_hatsu.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

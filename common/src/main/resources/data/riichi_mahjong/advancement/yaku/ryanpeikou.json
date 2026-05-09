@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/iipeikou",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_pin_7"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.ryanpeikou"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.ryanpeikou.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

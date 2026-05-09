@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/shousuushii",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_wind_north"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.daisuushii"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.daisuushii.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

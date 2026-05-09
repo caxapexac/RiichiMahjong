@@ -1,0 +1,9 @@
+﻿{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "riichi_mahjong:tile_dragon_white" },
+    { "item": "minecraft:redstone" }
+  ],
+  "result": { "id": "riichi_mahjong:tile_man_1", "count": 1 }
+}

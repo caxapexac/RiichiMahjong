@@ -1,0 +1,18 @@
+{
+  "tile.place": {
+    "sounds": [
+      "riichi_mahjong:tile_place"
+    ]
+  },
+  "tile.hover.tile": {
+    "sounds": [
+      "riichi_mahjong:tile_4"
+    ]
+  },
+  "tile.hover.action": {
+    "sounds": [
+      "riichi_mahjong:tile_1"
+    ]
+  }
+}
+

@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/chankan",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_wind_north"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.sankantsu"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.sankantsu.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

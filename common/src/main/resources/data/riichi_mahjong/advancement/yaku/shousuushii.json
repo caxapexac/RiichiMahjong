@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/yakuhai_bakaze",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_wind_north"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.shousuushii"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.shousuushii.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

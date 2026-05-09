@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/dora",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_man_5"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.akadora"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.akadora.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

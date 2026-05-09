@@ -1,0 +1,8 @@
+{
+  "multipart": [
+    {"when": {"facing": "north"}, "apply": {"model": "riichi_mahjong:block/mahjong-solitaire"}},
+    {"when": {"facing": "east"},  "apply": {"model": "riichi_mahjong:block/mahjong-solitaire", "y": 90}},
+    {"when": {"facing": "south"}, "apply": {"model": "riichi_mahjong:block/mahjong-solitaire", "y": 180}},
+    {"when": {"facing": "west"},  "apply": {"model": "riichi_mahjong:block/mahjong-solitaire", "y": 270}}
+  ]
+}

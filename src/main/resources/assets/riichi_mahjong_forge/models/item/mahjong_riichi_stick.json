@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "riichi_mahjong_forge:item/mahjong_riichi_stick"
-  }
-}

@@ -1,0 +1,13 @@
+{
+  "type": "riichi_mahjong:mahjong_altar",
+  "min_han": 8,
+  "ingredients": [
+    {
+      "tag": "minecraft:fishes"
+    }
+  ],
+  "result": {
+    "id": "riichi_mahjong:aka_manbou_painting",
+    "count": 1
+  }
+}

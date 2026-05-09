@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/root",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_wind_west"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.renhou"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.renhou.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

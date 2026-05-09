@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "CCC",
+    "CWC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:coal_block"
+    },
+    "W": {
+      "item": "riichi_mahjong:tile_dragon_white"
+    }
+  },
+  "result": {
+    "id": "riichi_mahjong:yaku_generator_tier_1"
+  }
+}

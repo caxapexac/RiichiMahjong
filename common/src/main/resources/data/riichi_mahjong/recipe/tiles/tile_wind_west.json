@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "   ",
+    "CB ",
+    "   "
+  ],
+  "key": {
+    "B": {
+      "item": "riichi_mahjong:tile_dragon_white"
+    },
+    "C": {
+      "item": "minecraft:compass"
+    }
+  },
+  "result": {
+    "id": "riichi_mahjong:tile_wind_west",
+    "count": 1
+  }
+}

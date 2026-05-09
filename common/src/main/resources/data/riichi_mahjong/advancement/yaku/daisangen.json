@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/shousangen",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_dragon_red"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.daisangen"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.daisangen.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

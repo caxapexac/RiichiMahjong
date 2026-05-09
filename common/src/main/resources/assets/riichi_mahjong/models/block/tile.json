@@ -1,0 +1,62 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "riichi_mahjong:block/tile_shell",
+		"1": "riichi_mahjong:block/tile_face",
+		"particle": "riichi_mahjong:block/tile_shell"
+	},
+	"elements": [
+		{
+			"from": [2.5, 0, 3.5],
+			"to": [13.5, 14, 12.5],
+			"faces": {
+				"north": {"uv": [2.5, 1, 13.5, 15], "texture": "#1"},
+				"east": {"uv": [0.5, 4.5, 5, 11.5], "texture": "#0"},
+				"south": {"uv": [5, 4.5, 10.5, 11.5], "texture": "#0"},
+				"west": {"uv": [10.5, 4.5, 15, 11.5], "texture": "#0"},
+				"up": {"uv": [10.5, 4.5, 5, 0], "texture": "#0"},
+				"down": {"uv": [10.5, 11.5, 5, 16], "texture": "#0"}
+			}
+		}
+	],
+	"gui_light": "front",
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [45, -180, 0],
+			"translation": [0, 2.25, 1],
+			"scale": [0.35, 0.35, 0.35]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [45, -180, 0],
+			"translation": [0, 2.25, 1],
+			"scale": [0.35, 0.35, 0.35]
+		},
+		"firstperson_righthand": {
+			"rotation": [-21, 150, 0],
+			"translation": [0, 3.25, 0],
+			"scale": [0.35, 0.35, 0.35]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-20, 150, 0],
+			"translation": [0, 3.25, 0],
+			"scale": [0.35, 0.35, 0.35]
+		},
+		"ground": {
+			"translation": [0, 2, 0],
+			"scale": [0.2, 0.2, 0.2]
+		},
+		"gui": {
+			"rotation": [-16, -180, 0],
+			"translation": [0, 1, 0]
+		},
+		"head": {
+			"translation": [0, 10, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"on_shelf": {
+			"rotation": [0, -180, 0]
+		}
+	}
+}

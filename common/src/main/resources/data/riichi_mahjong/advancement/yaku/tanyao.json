@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/root",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_man_2"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.tanyao"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.tanyao.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

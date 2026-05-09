@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/honroutou",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_man_9"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.chinroutou"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.chinroutou.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

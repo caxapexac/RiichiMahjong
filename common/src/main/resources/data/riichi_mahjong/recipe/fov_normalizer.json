@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "III",
+    "ISI",
+    "III"
+  ],
+  "key": {
+    "I": { "item": "minecraft:iron_block" },
+    "S": { "item": "minecraft:spyglass" }
+  },
+  "result": {
+    "id": "riichi_mahjong:fov_normalizer",
+    "count": 1
+  }
+}

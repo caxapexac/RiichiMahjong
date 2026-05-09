@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "riichi_mahjong:block/mahjong_altar"
+    }
+  }
+}

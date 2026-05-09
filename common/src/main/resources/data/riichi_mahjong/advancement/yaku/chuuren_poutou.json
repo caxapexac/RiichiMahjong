@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/chinitsu",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_man_9"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.chuuren_poutou"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.chuuren_poutou.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

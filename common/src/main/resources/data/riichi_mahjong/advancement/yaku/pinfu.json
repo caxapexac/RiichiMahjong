@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/tanyao",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_sou_2"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.pinfu"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.pinfu.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

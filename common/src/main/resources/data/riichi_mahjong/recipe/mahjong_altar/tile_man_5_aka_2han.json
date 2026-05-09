@@ -1,0 +1,11 @@
+{
+  "type": "riichi_mahjong:mahjong_altar",
+  "min_han": 2,
+  "ingredients": [
+    { "item": "riichi_mahjong:tile_man_5" }
+  ],
+  "result": {
+    "id": "riichi_mahjong:tile_man_5_aka",
+    "count": 1
+  }
+}

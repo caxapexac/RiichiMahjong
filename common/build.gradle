@@ -1,0 +1,75 @@
+architectury {
+    common rootProject.enabled_platforms.split(',')
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // We depend on Fabric Loader here to use the Fabric @Environment annotations,
+    // which get remapped to the correct annotations on each platform.
+    // Do NOT use other classes from Fabric Loader.
+    modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
+
+    // Architectury API. This is optional, and you can comment it out if you don't need it.
+    modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
+
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+def themahjongTestLogging = {
+    events 'failed'
+    exceptionFormat 'full'
+    showExceptions true
+    showCauses true
+    showStackTraces false
+    showStandardStreams false
+}
+
+tasks.register('testTheMahjong', Test) {
+    group = 'verification'
+    description = 'Runs unit tests for the themahjong library.'
+
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        excludeTags 'full-replay'
+    }
+    include 'com/themahjong/**'
+    testLogging themahjongTestLogging
+}
+
+tasks.register('testTheMahjongFull', Test) {
+    group = 'verification'
+    description = 'Runs full replay tests against the downloaded 2019 Tenhou dataset (requires scripts/download-tenhou-2019.ps1). Run ONLY when explicitly asked to.'
+
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'full-replay'
+    }
+    include 'com/themahjong/**'
+    testLogging themahjongTestLogging
+}
+
+tasks.register('testCompat', Test) {
+    group = 'verification'
+    description = 'Runs unit tests for the themahjongcompat NBT bridge layer (Minecraft NBT API).'
+
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform()
+    include 'com/riichimahjong/themahjongcompat/**'
+    testLogging themahjongTestLogging
+}
+
+tasks.register('runTheMahjongCli', JavaExec) {
+    group = 'application'
+    description = 'Runs the themahjong CLI smoke execution.'
+
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.themahjong.TheMahjongCli'
+}

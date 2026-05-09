@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/root",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_pin_5"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.menzen_tsumo"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.menzen_tsumo.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

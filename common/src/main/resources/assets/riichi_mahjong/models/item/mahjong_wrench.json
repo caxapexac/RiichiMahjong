@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "riichi_mahjong:item/mahjong_wrench"
+  }
+}

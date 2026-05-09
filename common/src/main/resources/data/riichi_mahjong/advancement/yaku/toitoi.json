@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/root",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:tile_dragon_red"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.toitoi"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.toitoi.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

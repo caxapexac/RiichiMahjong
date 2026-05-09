@@ -1,0 +1,22 @@
+{
+  "parent": "riichi_mahjong:yaku/akadora",
+  "criteria": {
+    "earned": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "riichi_mahjong:mahjong_red_dragon_soul"
+    },
+    "title": {
+      "translate": "riichi_mahjong.yaku.uradora"
+    },
+    "description": {
+      "translate": "riichi_mahjong.advancement.uradora.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  }
+}

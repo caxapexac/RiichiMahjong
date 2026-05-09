@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "riichi_mahjong:block/tile_pin_6"
+    },
+    "facing=east": {
+      "model": "riichi_mahjong:block/tile_pin_6",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "riichi_mahjong:block/tile_pin_6",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "riichi_mahjong:block/tile_pin_6",
+      "y": 270
+    }
+  }
+}
