@@ -47,6 +47,11 @@ dependencies {
 
     // Jade — in-world block/entity tooltips. Dev-only, not shipped.
     modRuntimeOnly "maven.modrinth:jade:15.10.5+neoforge"
+
+    // Powah — dev-only, used to test the yaku generator's RF extraction via energy cells.
+    modRuntimeOnly "maven.modrinth:powah:6.2.10-neoforge"
+    modRuntimeOnly "maven.modrinth:guideme:21.1.15"
+    modRuntimeOnly "maven.modrinth:cloth-config:15.0.140+neoforge"
 }
 
 processResources {

@@ -58,6 +58,12 @@ dependencies {
 
     // Jade — in-world block/entity tooltips. Dev-only, not shipped.
     modRuntimeOnly "maven.modrinth:jade:15.10.5+fabric"
+
+    // TechReborn + RebornCore — dev-only, used to test the yaku generator's RF
+    // extraction via TR cables / energy storage units (TechReborn upstreams the
+    // Team Reborn Energy API we already depend on).
+    modRuntimeOnly "maven.modrinth:techreborn:5.11.19"
+    modRuntimeOnly "maven.modrinth:reborncore:5.11.19"
 }
 
 processResources {

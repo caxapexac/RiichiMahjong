@@ -108,9 +108,10 @@ public class YakuGeneratorBlockEntity extends BlockEntity {
     private boolean lastYakuman;
     private boolean autoSortOnReroll = true;
 
-    // Forge IEnergyStorage capability + neighbor-pushing stripped for the Architectury
-    // port — needs cross-loader energy-cap impls. Internal energyStored field still
-    // accumulates (visible in the menu UI); export to neighbours lands in Phase 2.5.
+    /** Loader-specific neighbour energy-push state (a per-face cap-cache array).
+     *  Allocated lazily by {@link EnergyPushPlatform} impls, opaque to common
+     *  code. Bound to this BE's lifetime — GC reclaims it when the BE dies. */
+    public Object loaderEnergyPushState;
 
     public YakuGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.YAKU_GENERATOR_BLOCK_ENTITY.get(), pos, state);
@@ -144,7 +145,9 @@ public class YakuGeneratorBlockEntity extends BlockEntity {
                 currentRfPerTick = 0;
             }
         }
-        // Neighbor energy push deferred to Phase 2.5 (cross-loader energy cap).
+        if (energyStored > 0 && EnergyPushPlatform.tickPush(this) > 0) {
+            changed = true;
+        }
         if (changed) {
             setChanged();
         }
