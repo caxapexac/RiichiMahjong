@@ -1,0 +1,11 @@
+{
+  "type": "riichi_mahjong:mahjong_altar",
+  "min_han": 13,
+  "ingredients": [
+    { "item": "riichi_mahjong:mahjong_fake_star" }
+  ],
+  "result": {
+    "id": "riichi_mahjong:mahjong_star",
+    "count": 1
+  }
+}

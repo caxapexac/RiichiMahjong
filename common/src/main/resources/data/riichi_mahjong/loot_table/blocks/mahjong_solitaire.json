@@ -1,4 +1,4 @@
-﻿{
+{
   "type": "minecraft:block",
   "pools": [
     {
@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "riichi_mahjong:yaku_generator"
+          "name": "riichi_mahjong:mahjong_solitaire"
         }
       ],
       "conditions": [

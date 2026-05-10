@@ -166,6 +166,11 @@ public class MahjongTableHumanPlayer extends MahjongHumanPlayer {
             return changedSince(priorAttempted, priorDelivered, priorPending, priorRiichi);
         }
         if (drawnTileDeliveryAttempted) {
+            // Delivery already happened on a previous tick — but the riichi
+            // auto-discard timer must keep ticking, otherwise the 0.3 s
+            // threshold is never reached (it only ever advances by one tick
+            // before this branch starts short-circuiting).
+            maybeAutoQueueRiichiDiscard(level, table, seatIndex);
             return changedSince(priorAttempted, priorDelivered, priorPending, priorRiichi);
         }
         if (occupant == null) return changedSince(priorAttempted, priorDelivered, priorPending, priorRiichi);

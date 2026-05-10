@@ -1,0 +1,14 @@
+{
+  "type": "riichi_mahjong:mahjong_altar",
+  "min_han": 1,
+  "ingredients": [
+    { "item": "minecraft:cobblestone" },
+    { "item": "minecraft:cobblestone" },
+    { "item": "minecraft:cobblestone" },
+    { "item": "minecraft:cobblestone" }
+  ],
+  "result": {
+    "id": "minecraft:stone",
+    "count": 4
+  }
+}

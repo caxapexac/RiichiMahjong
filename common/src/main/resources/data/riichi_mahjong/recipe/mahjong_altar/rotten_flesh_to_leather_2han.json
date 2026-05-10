@@ -1,0 +1,11 @@
+{
+  "type": "riichi_mahjong:mahjong_altar",
+  "min_han": 2,
+  "ingredients": [
+    { "item": "minecraft:rotten_flesh" }
+  ],
+  "result": {
+    "id": "minecraft:leather",
+    "count": 1
+  }
+}

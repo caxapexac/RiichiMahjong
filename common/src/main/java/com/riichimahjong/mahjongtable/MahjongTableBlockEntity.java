@@ -111,7 +111,7 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
     private static final String NBT_INVENTORY = "MtItemsInt";
     private static final String NBT_INVENTORY_SLOT = "Slot";
     private static final String NBT_INVENTORY_ITEM = "Item";
-    private static final String NBT_STATE = "State";
+    // NBT_STATE removed: state is derived from driver presence; no need to round-trip.
     private static final String NBT_LAST_POWERED = "LastPowered";
     private static final String NBT_DRIVER = "Driver";
     private static final String NBT_SEATS = "Seats";
@@ -128,7 +128,9 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
     private static final String NBT_RESULT_ANIM_YAKU_IDX = "ResultAnimYakuIdx";
 
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(INVENTORY_SIZE, ItemStack.EMPTY);
-    private State state = State.IDLE;
+    // No `state` field — single source of truth is {@link #driver}: null ⇒
+    // IDLE, non-null ⇒ GAME. {@link #state()} still returns the enum for
+    // external callers; it just computes from `driver`.
     private boolean lastPowered;
     private List<SeatInfo> seats = defaultSeats();
     private RuleSetPreset preset = RuleSetPreset.MAHJONG_SOUL_4P;
@@ -174,6 +176,14 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
      *  meaning across save/load. */
     private transient long lastCuteClickGameTime = -1L;
 
+    /** Client-only renderer state — opaque {@code Object} so common code
+     *  doesn't need to import the client-only class. Lazily allocated by
+     *  {@code MahjongTableRenderer} on first render and scoped to this BE
+     *  instance, so two tables in the world don't clobber each other's
+     *  cached scene / animation clocks. Lifetime = BE lifetime; GC handles
+     *  cleanup when the chunk unloads. */
+    @Nullable public transient Object clientRenderState;
+
     public MahjongTableBlockEntity(BlockPos pos, BlockState blockState) {
         super(com.riichimahjong.registry.ModBlockEntities.MAHJONG_TABLE_BLOCK_ENTITY.get(), pos, blockState);
     }
@@ -188,7 +198,8 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
 
     // ---- read accessors ---------------------------------------------------
 
-    public State state() { return state; }
+    /** Derived from {@link #driver}: GAME iff a driver is live, IDLE otherwise. */
+    public State state() { return driver != null ? State.GAME : State.IDLE; }
 
     @Nullable
     public TheMahjongDriver driver() { return driver; }
@@ -243,7 +254,7 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
 
     /** Claims the seat for {@code uuid}; rejects closed seats. Idempotent. */
     public boolean claimSeat(int seat, UUID uuid) {
-        if (state != State.IDLE) return false;
+        if (driver != null) return false;
         if (seat < 0 || seat >= seats.size()) return false;
         if (!seats.get(seat).enabled()) return false;
         seatOfPlayer(uuid).ifPresent(prev -> {
@@ -256,7 +267,7 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
 
     /** Removes the occupant from an enabled seat. */
     public void releaseSeat(int seat) {
-        if (state != State.IDLE) return;
+        if (driver != null) return;
         if (seat < 0 || seat >= seats.size()) return;
         SeatInfo info = seats.get(seat);
         if (info.occupant().isPresent()) {
@@ -270,7 +281,7 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
      * open, rest closed). Destructive: any occupant of a seat being closed is dropped.
      */
     public void selectPreset(RuleSetPreset newPreset) {
-        if (state != State.IDLE) return;
+        if (driver != null) return;
         this.preset = newPreset;
         padSeatsAtLeast(DEFAULT_SEAT_COUNT);
         int wantOpen = newPreset.playerCount();
@@ -285,7 +296,7 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
 
     /** Toggles the seat between open and closed. Closing also drops the occupant. */
     public void toggleSeatEnabled(int seat) {
-        if (state != State.IDLE) return;
+        if (driver != null) return;
         if (seat < 0 || seat >= seats.size()) return;
         SeatInfo current = seats.get(seat);
         seats.set(seat, current.enabled() ? SeatInfo.closed() : SeatInfo.open());
@@ -310,17 +321,18 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
     }
 
     private void onRisingEdge() {
-        switch (state) {
-            case IDLE -> tryStartMatch(new Random().nextLong());
-            case GAME -> {
-                if (driverIsTerminal()) {
-                    endGame();
-                }
-            }
+        // Driver presence is the only state. Idle → start; running → stop.
+        if (driver == null) {
+            tryStartMatch(new Random().nextLong());
+        } else {
+            endGame();
         }
     }
 
-    private boolean driverIsTerminal() {
+    /** True iff the driver has reached {@link MatchPhase.MatchEnded} (or
+     *  doesn't exist). Used by the block to recognise a finished match so
+     *  shift+RMB can restart it without the user manually pulsing redstone. */
+    public boolean isDriverTerminal() {
         return driver == null || driver.currentPhase() instanceof MatchPhase.MatchEnded;
     }
 
@@ -334,7 +346,7 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
         if (level == null || level.isClientSide()) {
             throw new IllegalStateException("tryStartMatch must be called on the server");
         }
-        if (state != State.IDLE) return StartMatchResult.NOT_IDLE;
+        if (driver != null) return StartMatchResult.NOT_IDLE;
 
         RuleSetPreset effective = effectivePreset();
         if (!seatsMatchCanonicalLayout(effective.playerCount())) {
@@ -349,7 +361,6 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
         this.driver = new TheMahjongDriver(match, buildPlayersFromSeats(activeSeats), new Random(seed));
         this.driver.setAnimationsEnabled(true);
         this.driver.startMatch();
-        this.state = State.GAME;
         markChangedAndSynced();
         return StartMatchResult.STARTED;
     }
@@ -368,7 +379,7 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
      * human already seated, behaves identically to {@link #tryStartMatch(long)}.
      */
     public StartMatchResult tryStartMatchWithAutoSeating(long seed) {
-        if (state != State.IDLE) return StartMatchResult.NOT_IDLE;
+        if (driver != null) return StartMatchResult.NOT_IDLE;
         if (humanSeatCount() == 0) {
             autoSeatNearbyPlayers();
         }
@@ -395,7 +406,7 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
         if (level == null || level.isClientSide()) {
             throw new IllegalStateException("tryApplyPredefined must be called on the server");
         }
-        if (state != State.IDLE) return StartMatchResult.NOT_IDLE;
+        if (driver != null) return StartMatchResult.NOT_IDLE;
         if (fixedMatch.playerCount() != preset.playerCount()) {
             throw new IllegalArgumentException(
                     "fixedMatch playerCount " + fixedMatch.playerCount()
@@ -427,7 +438,6 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
         this.driver = new TheMahjongDriver(
                 fixedMatch, buildPlayersFromSeats(activeSeats), new Random(seed), snap);
         this.driver.setAnimationsEnabled(true);
-        this.state = State.GAME;
         markChangedAndSynced();
         return StartMatchResult.STARTED;
     }
@@ -452,7 +462,7 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
         if (level == null || level.isClientSide()) {
             throw new IllegalStateException("tryApplyRecordSnapshot must be called on the server");
         }
-        if (state != State.IDLE) return StartMatchResult.NOT_IDLE;
+        if (driver != null) return StartMatchResult.NOT_IDLE;
 
         CompoundTag patched = snapshot.copy();
         // Substitute seat occupants — host at seat 0, bots elsewhere — so the
@@ -506,15 +516,16 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
         setChanged();
     }
 
-    /** Server-only: transition GAME → IDLE. Preserves {@link #seats()} for the next match. */
+    /** Server-only: kill the driver and switch to IDLE. Seats / preset /
+     *  inventory / settings are preserved; everything else dies with the
+     *  driver. */
     public void endGame() {
         if (level == null || level.isClientSide()) {
             throw new IllegalStateException("endGame must be called on the server");
         }
-        if (state != State.GAME) return;
+        if (driver == null) return;
         this.driver = null;
         this.randomSeed = 0L;
-        this.state = State.IDLE;
         markChangedAndSynced();
     }
 
@@ -843,6 +854,8 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
     }
 
     private void playResultStepSound(ServerLevel sl) {
+        org.slf4j.LoggerFactory.getLogger("TableSound").info(
+                "[ResultStep] stage={} yakuIdx={}", resultAnimStage, resultAnimYakuIdx);
         sl.playSound(null, getBlockPos(),
                 net.minecraft.sounds.SoundEvents.NOTE_BLOCK_BELL.value(),
                 net.minecraft.sounds.SoundSource.BLOCKS, 0.45f, 1.40f);
@@ -986,7 +999,7 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
     @Override
     public boolean stillValid(Player player) {
         if (level == null || level.getBlockEntity(getBlockPos()) != this) return false;
-        if (state != State.IDLE) return false;
+        if (driver != null) return false;
         return player.distanceToSqr(
                 getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5)
                 <= 64.0;
@@ -994,7 +1007,7 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        return state == State.IDLE;
+        return driver == null;
     }
 
     @Override
@@ -1032,7 +1045,7 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
     @Override
     protected void saveAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        tag.putString(NBT_STATE, state.name());
+        // No NBT_STATE — state is derived from driver presence on load.
         tag.putBoolean(NBT_LAST_POWERED, lastPowered);
         tag.putString(NBT_PRESET, preset.name());
         tag.putBoolean(NBT_MINT_TILES, mintTilesFromNothing);
@@ -1087,13 +1100,7 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
     protected void loadAdditional(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
 
-        if (tag.contains(NBT_STATE)) {
-            try {
-                state = State.valueOf(tag.getString(NBT_STATE));
-            } catch (IllegalArgumentException ignored) {
-                state = State.IDLE;
-            }
-        }
+        // No NBT_STATE — state is derived from driver presence below.
         lastPowered = tag.getBoolean(NBT_LAST_POWERED);
         mintTilesFromNothing = !tag.contains(NBT_MINT_TILES) || tag.getBoolean(NBT_MINT_TILES);
         deliverToMainHand    = !tag.contains(NBT_DELIVER_TO_MAIN_HAND) || tag.getBoolean(NBT_DELIVER_TO_MAIN_HAND);
@@ -1142,7 +1149,13 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
             }
         }
 
-        if (state == State.GAME && tag.contains(NBT_DRIVER, Tag.TAG_COMPOUND)) {
+        // Driver is the source of truth for table state — clear by default,
+        // and only reconstruct if the NBT carries a driver tag. This keeps
+        // load and the runtime invariant in lockstep without a separate
+        // state field needing manual upkeep.
+        this.driver = null;
+        this.randomSeed = 0L;
+        if (tag.contains(NBT_DRIVER, Tag.TAG_COMPOUND)) {
             this.randomSeed = tag.getLong(NBT_RANDOM_SEED);
             int playerCount = tag.getCompound(NBT_DRIVER).getCompound("match").getInt("playerCount");
             padSeatsAtLeast(DEFAULT_SEAT_COUNT);
@@ -1174,9 +1187,6 @@ public class MahjongTableBlockEntity extends BlockEntity implements Container, M
                     }
                 }
             }
-        } else if (state == State.GAME) {
-            // GAME flag without driver tag — corrupt/legacy state; bail to IDLE.
-            state = State.IDLE;
         }
     }
 

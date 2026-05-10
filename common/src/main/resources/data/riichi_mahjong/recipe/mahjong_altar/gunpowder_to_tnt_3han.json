@@ -1,0 +1,11 @@
+{
+  "type": "riichi_mahjong:mahjong_altar",
+  "min_han": 3,
+  "ingredients": [
+    { "item": "minecraft:gunpowder" }
+  ],
+  "result": {
+    "id": "minecraft:tnt",
+    "count": 1
+  }
+}

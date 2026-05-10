@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "riichi_mahjong:mahjong_table_new"
+    "riichi_mahjong:mahjong_table_new",
+    "riichi_mahjong:mahjong_solitaire"
   ]
 }

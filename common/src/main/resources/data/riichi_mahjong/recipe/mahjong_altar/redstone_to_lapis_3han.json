@@ -1,0 +1,14 @@
+{
+  "type": "riichi_mahjong:mahjong_altar",
+  "min_han": 3,
+  "ingredients": [
+    { "item": "minecraft:redstone" },
+    { "item": "minecraft:redstone" },
+    { "item": "minecraft:redstone" },
+    { "item": "minecraft:redstone" }
+  ],
+  "result": {
+    "id": "minecraft:lapis_lazuli",
+    "count": 4
+  }
+}

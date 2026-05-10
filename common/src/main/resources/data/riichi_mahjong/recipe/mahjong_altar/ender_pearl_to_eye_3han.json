@@ -1,0 +1,12 @@
+{
+  "type": "riichi_mahjong:mahjong_altar",
+  "min_han": 3,
+  "ingredients": [
+    { "item": "minecraft:ender_pearl" },
+    { "item": "minecraft:blaze_powder" }
+  ],
+  "result": {
+    "id": "minecraft:ender_eye",
+    "count": 2
+  }
+}

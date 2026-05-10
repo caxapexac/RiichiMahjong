@@ -4,6 +4,13 @@ architectury {
 
 repositories {
     mavenCentral()
+    // Modrinth maven — EMI api jar pulled here at compile time so the
+    // altar's EMI plugin classes can resolve dev.emi.* without a hard
+    // runtime dependency.
+    maven {
+        url = 'https://api.modrinth.com/maven'
+        content { includeGroup 'maven.modrinth' }
+    }
 }
 
 dependencies {
@@ -14,6 +21,11 @@ dependencies {
 
     // Architectury API. This is optional, and you can comment it out if you don't need it.
     modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
+
+    // EMI — soft dependency. Compile-only here so the altar's EMI plugin
+    // classes can reference dev.emi.* API types. Per-loader runtime jars are
+    // declared in fabric/build.gradle and neoforge/build.gradle for dev runs.
+    modCompileOnly "maven.modrinth:emi:1.1.22+1.21.1+fabric"
 
     testImplementation platform('org.junit:junit-bom:5.10.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'

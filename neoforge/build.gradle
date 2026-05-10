@@ -52,6 +52,9 @@ dependencies {
     modRuntimeOnly "maven.modrinth:powah:6.2.10-neoforge"
     modRuntimeOnly "maven.modrinth:guideme:21.1.15"
     modRuntimeOnly "maven.modrinth:cloth-config:15.0.140+neoforge"
+
+    // EMI — dev-only, used to verify the altar's EMI plugin renders correctly.
+    modRuntimeOnly "maven.modrinth:emi:1.1.22+1.21.1+neoforge"
 }
 
 processResources {

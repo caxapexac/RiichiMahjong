@@ -1,0 +1,12 @@
+{
+  "type": "riichi_mahjong:mahjong_altar",
+  "min_han": 13,
+  "ingredients": [
+    { "item": "minecraft:wither_skeleton_skull" },
+    { "item": "minecraft:soul_sand" }
+  ],
+  "result": {
+    "id": "minecraft:nether_star",
+    "count": 1
+  }
+}

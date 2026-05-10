@@ -1,0 +1,14 @@
+{
+  "type": "riichi_mahjong:mahjong_altar",
+  "min_han": 4,
+  "ingredients": [
+    { "item": "minecraft:string" },
+    { "item": "minecraft:string" },
+    { "item": "minecraft:string" },
+    { "item": "minecraft:string" }
+  ],
+  "result": {
+    "id": "minecraft:phantom_membrane",
+    "count": 1
+  }
+}

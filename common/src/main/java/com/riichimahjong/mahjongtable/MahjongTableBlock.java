@@ -186,6 +186,12 @@ public class MahjongTableBlock extends BaseMultipartBlock {
         }
 
         if (table.state() == MahjongTableBlockEntity.State.GAME) {
+            // Wrench-RMB on master during GAME → abort the match. Explicit
+            // mid-match kill switch, mirrors the wrench's IDLE settings role.
+            if (holdsWrench(player) && isMaster(state)) {
+                table.endGame();
+                return InteractionResult.CONSUME;
+            }
             // Result screen up after a round ends? Centre RMB advances to the
             // next round; clicks on edge cells are ignored. Manual advance is
             // by design — we don't auto-roll into the next round so players
@@ -199,6 +205,21 @@ public class MahjongTableBlock extends BaseMultipartBlock {
                                 Component.literal("Click the table centre to start the next round."),
                                 true);
                     }
+                }
+                return InteractionResult.CONSUME;
+            }
+            // Match is over (driver in MatchEnded) but no result animation
+            // running — typical state after the final round's result screen
+            // has been advanced. Treat shift+RMB on master like the IDLE
+            // start: end the game first, then start a fresh match.
+            if (table.isDriverTerminal() && isMaster(state) && player.isShiftKeyDown()
+                    && !holdsWrench(player)) {
+                table.endGame();
+                MahjongTableBlockEntity.StartMatchResult result =
+                        table.tryStartMatchWithAutoSeating(new Random().nextLong());
+                Component warning = warningFor(result, table);
+                if (warning != null) {
+                    player.sendSystemMessage(warning);
                 }
                 return InteractionResult.CONSUME;
             }

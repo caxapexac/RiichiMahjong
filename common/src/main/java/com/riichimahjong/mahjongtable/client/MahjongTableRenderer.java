@@ -331,68 +331,52 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
 
     private final Font font;
 
-    @Nullable private CuteRenderer cute;
-    @Nullable private MahjongTableBlockEntity boundBE;
-    /** One root group per seat — cleared and rebuilt as a unit. */
-    private final GroupNode[] seatRoots = new GroupNode[4];
-    @Nullable private TheMahjongMatch lastMatch;
-    @Nullable private Direction lastFacing;
-    private boolean lastEditorActive;
-    /** Nodes corresponding to the round's currently-active tile (drawn on
-     *  turn, last discard awaiting claims, etc.). Outlined orange after the
-     *  cute scene draws so the player sees the hot tile clearly. Populated
-     *  during scene rebuild; cleared on every rebuild. */
-    private final java.util.List<CuteNode> activeTileNodes = new java.util.ArrayList<>();
-    /** Nodes corresponding to hand tiles the local player may legally discard
-     *  this turn. Outlined in a softer colour than activeTileNodes so the
-     *  active tile stays visually distinct. Populated only during the local
-     *  player's AwaitingDiscard turn. */
-    private final java.util.List<CuteNode> legalDiscardNodes = new java.util.ArrayList<>();
-    /** Per-seat discard count observed at last rebuild. Used to detect
-     *  growth → identify the last-discarder seat across phases (the round's
-     *  {@code claimSourceSeat} only holds during the claim window) and to
-     *  fire a tile-place sound on each new discard. */
-    private final int[] lastSeenDiscardCount = new int[4];
-    /** Per-seat meld count observed at last rebuild. Growth = a meld was
-     *  formed → tile-place sound. */
-    private final int[] lastSeenMeldCount = new int[4];
-    /** Live-wall size at last rebuild. Shrinking = a tile was drawn → softer
-     *  tile-place sound. {@code -1} until first observation. */
-    private int lastSeenLiveWallSize = -1;
-    /** Seat that most recently appended a discard, or -1 if unknown. Persists
-     *  across phase transitions until another seat discards. */
-    private int lastDiscarderSeat = -1;
-    /** Local-player seat (0..3) at last rebuild, or -1 if not seated. Tracked in
-     *  staleness so hand-tile interactivity flips on/off as the player sits/stands
-     *  or as the turn passes through them. */
-    private int lastLocalSeat = -1;
-    /** Cached "is it local player's discard turn" at last rebuild — flips
-     *  interactive bounds on hand tiles. */
-    private boolean lastLocalDiscardTurn;
-    /** Cached "does the local player physically hold the drawn tile in
-     *  inventory" at last rebuild. Tracked so the renderer rebuilds when
-     *  delivery succeeds/fails or the player picks up/drops the tile, without
-     *  forcing per-frame rebuilds (which would reset the hover-lift animation
-     *  every frame). */
-    private boolean lastDrawnInLocalInv;
-    /** Client-local animation clock for {@link MatchPhase.Dealing}. The driver is
-     *  reconstructed on the client from synced NBT but does not tick — its
-     *  {@code elapsed} only changes when a sync packet arrives. To animate
-     *  smoothly between stage-transition syncs we measure stage progress against
-     *  this locally-recorded start nanos instead of {@code Dealing.elapsed()}. */
-    @Nullable private MatchPhase.Stage lastObservedDealingStage;
-    private long localDealingStageStartNanos;
-    /** Throttle for per-tile click sounds so a 60-stacks-in-1s build doesn't
-     *  machine-gun the speakers. Min interval between any two clicks. */
-    private long lastClickSoundNanos;
     private static final long CLICK_SOUND_MIN_INTERVAL_NANOS = 80_000_000L; // 80ms → ≤12.5/s
-    /** Per-frame deltas for incremental click triggers. Reset on stage change
-     *  so a new stage always starts from a clean baseline. */
-    private int lastFrameRingStacks;
-    private int lastFrameHandTiles;
-    /** Game-tick of the last particle emit pass — guards against multi-fire on
-     *  the same tick when {@code render()} runs more than once per tick. */
-    private long lastParticleTick = Long.MIN_VALUE;
+
+    /**
+     * All per-BE render state. Stashed on the BE itself via
+     * {@link MahjongTableBlockEntity#clientRenderState} so that two tables in
+     * the world don't clobber each other's cached scene / animation clocks.
+     *
+     * <p>The BER is a singleton per BE-type — it must hold zero per-BE state
+     * in its own instance fields. Anything that varies between BEs lives here.
+     */
+    static final class State {
+        @Nullable CuteRenderer cute;
+        /** One root group per seat — cleared and rebuilt as a unit. */
+        final GroupNode[] seatRoots = new GroupNode[4];
+        @Nullable TheMahjongMatch lastMatch;
+        @Nullable Direction lastFacing;
+        boolean lastEditorActive;
+        final java.util.List<CuteNode> activeTileNodes = new java.util.ArrayList<>();
+        final java.util.List<CuteNode> legalDiscardNodes = new java.util.ArrayList<>();
+        final int[] lastSeenDiscardCount = new int[4];
+        final int[] lastSeenMeldCount = new int[4];
+        int lastSeenLiveWallSize = -1;
+        int lastDiscarderSeat = -1;
+        int lastLocalSeat = -1;
+        boolean lastLocalDiscardTurn;
+        boolean lastDrawnInLocalInv;
+        @Nullable MatchPhase.Stage lastObservedDealingStage;
+        long localDealingStageStartNanos;
+        long lastClickSoundNanos;
+        int lastFrameRingStacks;
+        int lastFrameHandTiles;
+        long lastParticleTick = Long.MIN_VALUE;
+    }
+
+    /** Get-or-create the per-BE render state. Hooks the cute renderer up to
+     *  the BE's level/pos on first call. */
+    private static State stateFor(MahjongTableBlockEntity table) {
+        Object obj = table.clientRenderState;
+        if (obj instanceof State s) return s;
+        State s = new State();
+        s.cute = new CuteRenderer(table.getLevel().dimension(), table.getBlockPos());
+        s.cute.setHoverSound(ModSounds.TILE_HOVER_ACTION_SOUND.get(), 0.55f, 1.0f);
+        s.cute.attach();
+        table.clientRenderState = s;
+        return s;
+    }
 
     public MahjongTableRenderer(BlockEntityRendererProvider.Context ctx) {
         this.font = ctx.getFont();
@@ -434,9 +418,9 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
         // so an additional cute-root rotation would rotate the scene twice.
         // The seat text labels render outside cute (direct master-block pose)
         // which is why their placement reads correctly even when tiles drifted.
-        ensureBound(table);
-        rebuildSceneIfStale(table, facing, CuteEditor.isActive());
-        cute.frame(poseStack, buffers, packedLight, packedOverlay, partialTick);
+        State state = stateFor(table);
+        rebuildSceneIfStale(state, table, facing, CuteEditor.isActive());
+        state.cute.frame(poseStack, buffers, packedLight, packedOverlay, partialTick);
 
         // 2b/2c. Highlights — identical orange (R/G/B/A) for both legal-
         // discard tiles and the round's currently-active tile. Same colour so
@@ -444,11 +428,11 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
         // draws after the legal-discard pass so when both apply (the drawn
         // tile is also legal-to-discard) the active outline lands on top with
         // no visible difference.
-        for (CuteNode node : legalDiscardNodes) {
+        for (CuteNode node : state.legalDiscardNodes) {
             HoverHighlightRenderer.drawNodeOutline(poseStack, buffers, node,
                     HIGHLIGHT_R, HIGHLIGHT_G, HIGHLIGHT_B, HIGHLIGHT_A);
         }
-        for (CuteNode node : activeTileNodes) {
+        for (CuteNode node : state.activeTileNodes) {
             HoverHighlightRenderer.drawNodeOutline(poseStack, buffers, node,
                     HIGHLIGHT_R, HIGHLIGHT_G, HIGHLIGHT_B, HIGHLIGHT_A);
         }
@@ -470,8 +454,8 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
                 && !(table.driver().currentPhase() instanceof MatchPhase.Dealing)
                 && !table.isInResultPhase()) {
             long gt = level.getGameTime();
-            if (gt != lastParticleTick) {
-                lastParticleTick = gt;
+            if (gt != state.lastParticleTick) {
+                state.lastParticleTick = gt;
                 emitSeatParticles(table, level, gt, facing);
             }
         }
@@ -777,32 +761,7 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
                 Component.literal(String.valueOf(han)));
     }
 
-    private void ensureBound(MahjongTableBlockEntity be) {
-        if (boundBE == be && cute != null) return;
-        if (cute != null) cute.detach();
-        cute = new CuteRenderer(be.getLevel().dimension(), be.getBlockPos());
-        cute.setHoverSound(ModSounds.TILE_HOVER_ACTION_SOUND.get(), 0.55f, 1.0f);
-        cute.attach();
-        boundBE = be;
-        for (int i = 0; i < seatRoots.length; i++) seatRoots[i] = null;
-        activeTileNodes.clear();
-        legalDiscardNodes.clear();
-        for (int i = 0; i < lastSeenDiscardCount.length; i++) lastSeenDiscardCount[i] = 0;
-        for (int i = 0; i < lastSeenMeldCount.length; i++) lastSeenMeldCount[i] = 0;
-        lastSeenLiveWallSize = -1;
-        lastDiscarderSeat = -1;
-        lastMatch = null;
-        lastFacing = null;
-        lastEditorActive = false;
-        lastLocalSeat = -1;
-        lastLocalDiscardTurn = false;
-        lastDrawnInLocalInv = false;
-        lastObservedDealingStage = null;
-        lastFrameRingStacks = 0;
-        lastFrameHandTiles = 0;
-    }
-
-    private void rebuildSceneIfStale(MahjongTableBlockEntity table, Direction facing, boolean editorActive) {
+    private void rebuildSceneIfStale(State state, MahjongTableBlockEntity table, Direction facing, boolean editorActive) {
         TheMahjongDriver driver = table.driver();
         TheMahjongMatch match = driver == null ? null : driver.match();
         Level level = table.getLevel();
@@ -823,29 +782,29 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
         // delivery success / failure.
         boolean drawnInLocalInv = localSeat >= 0 && table.drawnTileDeliveredForSeat(localSeat);
         if (!editorActive && !inDealing
-                && match == lastMatch
-                && facing == lastFacing
-                && editorActive == lastEditorActive
-                && localSeat == lastLocalSeat
-                && localDiscardTurn == lastLocalDiscardTurn
-                && drawnInLocalInv == lastDrawnInLocalInv) {
+                && match == state.lastMatch
+                && facing == state.lastFacing
+                && editorActive == state.lastEditorActive
+                && localSeat == state.lastLocalSeat
+                && localDiscardTurn == state.lastLocalDiscardTurn
+                && drawnInLocalInv == state.lastDrawnInLocalInv) {
             return;
         }
-        lastMatch = match;
-        lastFacing = facing;
-        lastEditorActive = editorActive;
-        lastLocalSeat = localSeat;
-        lastLocalDiscardTurn = localDiscardTurn;
-        lastDrawnInLocalInv = drawnInLocalInv;
+        state.lastMatch = match;
+        state.lastFacing = facing;
+        state.lastEditorActive = editorActive;
+        state.lastLocalSeat = localSeat;
+        state.lastLocalDiscardTurn = localDiscardTurn;
+        state.lastDrawnInLocalInv = drawnInLocalInv;
 
-        for (int seat = 0; seat < seatRoots.length; seat++) {
-            if (seatRoots[seat] != null) {
-                cute.root().removeChild(seatRoots[seat]);
-                seatRoots[seat] = null;
+        for (int seat = 0; seat < state.seatRoots.length; seat++) {
+            if (state.seatRoots[seat] != null) {
+                state.cute.root().removeChild(state.seatRoots[seat]);
+                state.seatRoots[seat] = null;
             }
         }
-        activeTileNodes.clear();
-        legalDiscardNodes.clear();
+        state.activeTileNodes.clear();
+        state.legalDiscardNodes.clear();
 
         if (editorActive) {
             // Preview mode: render every layout at max capacity with placeholders,
@@ -854,8 +813,8 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
             for (int seat = 0; seat < 4; seat++) {
                 Direction outward = outwardForSeat(seat, facing);
                 if (outward == null) continue;
-                seatRoots[seat] = buildPreviewSeat(seat, outward);
-                cute.root().addChild(seatRoots[seat]);
+                state.seatRoots[seat] = buildPreviewSeat(seat, outward);
+                state.cute.root().addChild(state.seatRoots[seat]);
             }
             return;
         }
@@ -888,31 +847,31 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
         boolean playDiscardSound = false;
         boolean playMeldSound = false;
         boolean playDrawSound = false;
-        for (int i = 0; i < players.size() && i < lastSeenDiscardCount.length; i++) {
+        for (int i = 0; i < players.size() && i < state.lastSeenDiscardCount.length; i++) {
             int discNow = players.get(i).discards().size();
-            if (discNow > lastSeenDiscardCount[i]) {
-                lastDiscarderSeat = i;
+            if (discNow > state.lastSeenDiscardCount[i]) {
+                state.lastDiscarderSeat = i;
                 playDiscardSound = true;
             }
-            lastSeenDiscardCount[i] = discNow;
+            state.lastSeenDiscardCount[i] = discNow;
             int meldNow = players.get(i).melds().size();
-            if (meldNow > lastSeenMeldCount[i]) playMeldSound = true;
-            lastSeenMeldCount[i] = meldNow;
+            if (meldNow > state.lastSeenMeldCount[i]) playMeldSound = true;
+            state.lastSeenMeldCount[i] = meldNow;
         }
         int liveWallNow = round.liveWall().size();
-        if (lastSeenLiveWallSize >= 0 && liveWallNow < lastSeenLiveWallSize) {
+        if (state.lastSeenLiveWallSize >= 0 && liveWallNow < state.lastSeenLiveWallSize) {
             playDrawSound = true;
         }
-        lastSeenLiveWallSize = liveWallNow;
+        state.lastSeenLiveWallSize = liveWallNow;
         // Suppress per-event sounds while Dealing is animating — that stage
         // has its own dedicated build / hand-deal click loop and we don't
         // want both firing concurrently as the round materializes.
         if (!(driver.currentPhase() instanceof MatchPhase.Dealing)) {
             if (playDiscardSound || playMeldSound) {
-                playClickSound(level, table.getBlockPos(),
+                playClickSound(state, level, table.getBlockPos(),
                         ModSounds.TILE_PLACE_SOUND.get(), 0.55f);
             } else if (playDrawSound) {
-                playClickSound(level, table.getBlockPos(),
+                playClickSound(state, level, table.getBlockPos(),
                         ModSounds.TILE_PLACE_SOUND.get(), 0.35f);
             }
         }
@@ -926,18 +885,18 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
             dealingStage = dealing.stage();
             // Reset the local clock on every observed stage transition. Skipping
             // this would let progress run past 1.0 across stages.
-            if (lastObservedDealingStage != dealingStage) {
-                lastObservedDealingStage = dealingStage;
-                localDealingStageStartNanos = System.nanoTime();
-                lastFrameRingStacks = 0;
-                lastFrameHandTiles = 0;
+            if (state.lastObservedDealingStage != dealingStage) {
+                state.lastObservedDealingStage = dealingStage;
+                state.localDealingStageStartNanos = System.nanoTime();
+                state.lastFrameRingStacks = 0;
+                state.lastFrameHandTiles = 0;
                 playStageEntrySound(level, table.getBlockPos(), dealingStage);
             }
-            double localElapsed = (System.nanoTime() - localDealingStageStartNanos) / 1_000_000_000.0;
+            double localElapsed = (System.nanoTime() - state.localDealingStageStartNanos) / 1_000_000_000.0;
             double buildDuration = dealingStage.buildDuration();
             buildProgress = buildDuration <= 0 ? 1.0 : Math.min(1.0, localElapsed / buildDuration);
         } else {
-            lastObservedDealingStage = null;
+            state.lastObservedDealingStage = null;
         }
         double handFraction  = handVisibleFraction(dealingStage, buildProgress);
         boolean doraFaceUp   = dealingStage == null || dealingStage == MatchPhase.Stage.DORA_FLIP
@@ -952,7 +911,7 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
         // Single source of truth for the orange "active tile" outline. See
         // computeActiveHighlight for the rules. Computed once per scene
         // build so both the hand and river branches consult the same answer.
-        ActiveHighlight highlight = computeActiveHighlight(driver, round, lastDiscarderSeat);
+        ActiveHighlight highlight = computeActiveHighlight(driver, round, state.lastDiscarderSeat);
 
         TheMahjongTile faceDownPlaceholder = FACE_DOWN_PLACEHOLDER;
         int wallStackCount = WALL.i("count");
@@ -976,10 +935,10 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
                 ? Math.min(totalRingStacks, (int) Math.floor(buildProgress * totalRingStacks))
                 : totalRingStacks;
         // Click per new ring-stack during WALL_BUILDING — throttled.
-        if (dealingStage == MatchPhase.Stage.WALL_BUILDING && ringStacksBuilt > lastFrameRingStacks) {
-            playClickSound(level, table.getBlockPos(),
+        if (dealingStage == MatchPhase.Stage.WALL_BUILDING && ringStacksBuilt > state.lastFrameRingStacks) {
+            playClickSound(state, level, table.getBlockPos(),
                     ModSounds.TILE_PLACE_SOUND.get(), 0.45f);
-            lastFrameRingStacks = ringStacksBuilt;
+            state.lastFrameRingStacks = ringStacksBuilt;
         }
         int seat0DeadMaxTiles = deadStackCount * wallStackHeight;
 
@@ -1112,7 +1071,7 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
                                         (short) tileIdx));
                                 if (handChildIdx < n
                                         && legalDiscardTiles.contains(rendered.get(handChildIdx))) {
-                                    legalDiscardNodes.add(bm);
+                                    state.legalDiscardNodes.add(bm);
                                 }
                                 tileIdx++;
                                 handChildIdx++;
@@ -1129,7 +1088,7 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
                         var children = handGroup.children();
                         if (!children.isEmpty()
                                 && children.get(children.size() - 1) instanceof BlockModelNode last) {
-                            activeTileNodes.add(last);
+                            state.activeTileNodes.add(last);
                         }
                     }
                     root.addChild(handGroup);
@@ -1187,7 +1146,7 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
                             var children = riverGroup.children();
                             if (!children.isEmpty()
                                     && children.get(children.size() - 1) instanceof BlockModelNode last) {
-                                activeTileNodes.add(last);
+                                state.activeTileNodes.add(last);
                             }
                         }
                         root.addChild(riverGroup);
@@ -1205,15 +1164,15 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
                 }
             }
 
-            seatRoots[seat] = root;
-            cute.root().addChild(root);
+            state.seatRoots[seat] = root;
+            state.cute.root().addChild(root);
         }
 
         // Click per new dealt hand tile during DEALING_HANDS — throttled.
-        if (dealingStage == MatchPhase.Stage.DEALING_HANDS && handTilesThisFrame > lastFrameHandTiles) {
-            playClickSound(level, table.getBlockPos(),
+        if (dealingStage == MatchPhase.Stage.DEALING_HANDS && handTilesThisFrame > state.lastFrameHandTiles) {
+            playClickSound(state, level, table.getBlockPos(),
                     ModSounds.TILE_PLACE_SOUND.get(), 0.4f);
-            lastFrameHandTiles = handTilesThisFrame;
+            state.lastFrameHandTiles = handTilesThisFrame;
         }
     }
 
@@ -1344,10 +1303,10 @@ public class MahjongTableRenderer implements BlockEntityRenderer<MahjongTableBlo
      * {@link #CLICK_SOUND_MIN_INTERVAL_NANOS}, so a 60-stacks-per-second build
      * doesn't produce 60 sounds per second.
      */
-    private void playClickSound(Level level, BlockPos pos, SoundEvent sound, float volume) {
+    private void playClickSound(State state, Level level, BlockPos pos, SoundEvent sound, float volume) {
         long now = System.nanoTime();
-        if (now - lastClickSoundNanos < CLICK_SOUND_MIN_INTERVAL_NANOS) return;
-        lastClickSoundNanos = now;
+        if (now - state.lastClickSoundNanos < CLICK_SOUND_MIN_INTERVAL_NANOS) return;
+        state.lastClickSoundNanos = now;
         float pitch = 0.9f + level.getRandom().nextFloat() * 0.25f;
         level.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
                 sound, SoundSource.BLOCKS, volume, pitch, false);

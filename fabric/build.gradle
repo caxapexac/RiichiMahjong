@@ -64,6 +64,15 @@ dependencies {
     // Team Reborn Energy API we already depend on).
     modRuntimeOnly "maven.modrinth:techreborn:5.11.19"
     modRuntimeOnly "maven.modrinth:reborncore:5.11.19"
+
+    // EMI — disabled in fabric dev runtime: the 1.1.22+1.21.1+fabric jar
+    // hits AbstractMethodError on PreparableReloadListener.reload during
+    // client init (Yarn→Mojang remap of the 6-arg signature isn't binding
+    // EmiClientFabric$1's override). NeoForge runtime is fine. Common's
+    // MahjongAltarEmiPlugin still compiles against the modCompileOnly EMI
+    // api jar in common/build.gradle. Re-enable once a working version is
+    // identified.
+    // modRuntimeOnly "maven.modrinth:emi:1.1.22+1.21.1+fabric"
 }
 
 processResources {

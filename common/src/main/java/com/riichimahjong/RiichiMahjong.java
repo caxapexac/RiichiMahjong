@@ -39,6 +39,9 @@ public final class RiichiMahjong {
         CuteNetwork.register();
         MahjongTableBlock.registerEvents();
         MahjongAltarBlockEntity.registerEvents();
+        // Sou tiles burn as fuel (1-sou = 1 coal worth, scaling linearly).
+        // Architectury FuelRegistry fans out to both NeoForge and Fabric.
+        com.riichimahjong.mahjongcore.MahjongTileFuels.register();
         // EndermanCarriesMahjongTile is wired per-loader (NeoForge: FinalizeSpawnEvent
         // listener; Fabric: Mob.finalizeSpawn mixin) — no common-bus registration here.
     }

@@ -204,6 +204,8 @@ public final class CuteRenderer {
         if (hoverSound == null) return;
         Minecraft mc = Minecraft.getInstance();
         if (mc.player != null) {
+            org.slf4j.LoggerFactory.getLogger("TableSound").info(
+                    "[CuteHover] key={} sound={}", i.key(), hoverSound.getLocation());
             mc.player.playSound(hoverSound, hoverSoundVolume, hoverSoundPitch);
         }
     }

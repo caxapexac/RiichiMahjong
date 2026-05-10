@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -71,7 +72,7 @@ public final class MahjongTileItems {
                 blocks.register(id, () -> new MahjongTileBlock(MahjongTileBlock.defaultProperties()));
         TILE_BLOCKS_BY_CODE[code] = blockRo;
         TILE_ITEMS_BY_CODE[code] =
-                items.register(id, () -> new BlockItem(blockRo.get(), new Item.Properties().stacksTo(1)));
+                items.register(id, () -> new BlockItem(blockRo.get(), MahjongTileFlavor.propertiesForCode(code)));
     }
 
     public static Item itemForCode(int code) {
@@ -80,6 +81,16 @@ public final class MahjongTileItems {
         }
         RegistrySupplier<Item> ro = TILE_ITEMS_BY_CODE[code];
         return ro == null ? null : ro.get();
+    }
+
+    /** Returns the registry supplier for a tile code, for callers that need
+     *  to attach a {@code listen(...)} callback without forcing immediate
+     *  resolution (which would NPE pre-registration on NeoForge). */
+    public static Optional<RegistrySupplier<Item>> itemSupplierForCode(int code) {
+        if (code < 0 || code >= TILE_ITEMS_BY_CODE.length) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(TILE_ITEMS_BY_CODE[code]);
     }
 
     /**
