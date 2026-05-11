@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=down,triggered=false":  { "model": "riichi_mahjong:block/tsumo_clicker", "x": 90 },
+    "facing=down,triggered=true":   { "model": "riichi_mahjong:block/tsumo_clicker", "x": 90 },
+    "facing=up,triggered=false":    { "model": "riichi_mahjong:block/tsumo_clicker", "x": 270 },
+    "facing=up,triggered=true":     { "model": "riichi_mahjong:block/tsumo_clicker", "x": 270 },
+    "facing=north,triggered=false": { "model": "riichi_mahjong:block/tsumo_clicker" },
+    "facing=north,triggered=true":  { "model": "riichi_mahjong:block/tsumo_clicker" },
+    "facing=south,triggered=false": { "model": "riichi_mahjong:block/tsumo_clicker", "y": 180 },
+    "facing=south,triggered=true":  { "model": "riichi_mahjong:block/tsumo_clicker", "y": 180 },
+    "facing=west,triggered=false":  { "model": "riichi_mahjong:block/tsumo_clicker", "y": 270 },
+    "facing=west,triggered=true":   { "model": "riichi_mahjong:block/tsumo_clicker", "y": 270 },
+    "facing=east,triggered=false":  { "model": "riichi_mahjong:block/tsumo_clicker", "y": 90 },
+    "facing=east,triggered=true":   { "model": "riichi_mahjong:block/tsumo_clicker", "y": 90 }
+  }
+}

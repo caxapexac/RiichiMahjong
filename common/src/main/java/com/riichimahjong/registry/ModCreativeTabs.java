@@ -27,6 +27,10 @@ public final class ModCreativeTabs {
                         output.accept(ModBlocks.YAKU_GENERATOR_TIER_1_ITEM.get());
                         output.accept(ModBlocks.YAKU_GENERATOR_TIER_2_ITEM.get());
                         output.accept(ModBlocks.YAKU_GENERATOR_TIER_3_ITEM.get());
+                        output.accept(ModBlocks.DISCARD_CLICKER_TIER_1_ITEM.get());
+                        output.accept(ModBlocks.DISCARD_CLICKER_TIER_2_ITEM.get());
+                        output.accept(ModBlocks.DISCARD_CLICKER_TIER_3_ITEM.get());
+                        output.accept(ModBlocks.TSUMO_CLICKER_ITEM.get());
                         output.accept(ModBlocks.FOV_NORMALIZER_ITEM.get());
                         output.accept(ModItems.LIQUID_EXPERIENCE_BUCKET.get());
                         output.accept(ModItems.MAHJONG_WRENCH.get());

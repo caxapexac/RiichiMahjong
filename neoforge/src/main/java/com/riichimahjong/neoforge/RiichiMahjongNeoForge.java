@@ -2,7 +2,6 @@ package com.riichimahjong.neoforge;
 
 import com.riichimahjong.RiichiMahjong;
 import com.riichimahjong.client.RiichiMahjongClient;
-import com.riichimahjong.gimmicks.EndermanCarriesMahjongTile;
 import com.riichimahjong.neoforge.caps.SolitaireFluidHandler;
 import com.riichimahjong.neoforge.caps.SolitaireItemHandler;
 import com.riichimahjong.neoforge.caps.YakuGenEnergyHandler;
@@ -18,16 +17,11 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
 
 @Mod(RiichiMahjong.MOD_ID)
 public final class RiichiMahjongNeoForge {
     public RiichiMahjongNeoForge(IEventBus modBus) {
         RiichiMahjong.init();
-        // FinalizeSpawnEvent fires on the GAME bus (NeoForge.EVENT_BUS), not the mod bus.
-        // Fires once per Mob.finalizeSpawn — i.e. genuine spawns, never chunk-load.
-        NeoForge.EVENT_BUS.addListener((FinalizeSpawnEvent event) ->
-                EndermanCarriesMahjongTile.onFinalizeSpawn(event.getEntity()));
 
         // Tell Carry On (if present) not to let players pick up the mahjong table or
         // the solitaire — both have BE state that wouldn't survive Carry On's

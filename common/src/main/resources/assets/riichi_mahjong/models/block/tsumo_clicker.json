@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top":   "riichi_mahjong:block/tsumo_clicker_top",
+    "front": "riichi_mahjong:block/tsumo_clicker_front",
+    "side":  "riichi_mahjong:block/tsumo_clicker_side"
+  }
+}

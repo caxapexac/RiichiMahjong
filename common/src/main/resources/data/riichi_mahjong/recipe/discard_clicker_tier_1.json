@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "CCC",
+    "RDR",
+    "CCC"
+  ],
+  "key": {
+    "C": { "item": "minecraft:cut_copper" },
+    "R": { "item": "minecraft:redstone" },
+    "D": { "item": "minecraft:dispenser" }
+  },
+  "result": {
+    "id": "riichi_mahjong:discard_clicker_tier_1"
+  }
+}

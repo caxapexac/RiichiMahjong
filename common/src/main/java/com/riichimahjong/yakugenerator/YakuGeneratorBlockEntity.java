@@ -12,6 +12,7 @@ import com.themahjong.TheMahjongRuleSet;
 import com.themahjong.TheMahjongTile;
 import com.themahjong.yaku.HandShape;
 import com.themahjong.yaku.NonYakuman;
+import com.themahjong.yaku.ShantenCalculator;
 import com.themahjong.yaku.WinCalculator;
 import com.themahjong.yaku.WinContext;
 import com.themahjong.yaku.WinResult;
@@ -113,6 +114,10 @@ public class YakuGeneratorBlockEntity extends BlockEntity {
      *  code. Bound to this BE's lifetime — GC reclaims it when the BE dies. */
     public Object loaderEnergyPushState;
 
+    /** Cached comparator signal; {@code -1} = needs recompute. Invalidated on any
+     *  tile mutation; pulses a comparator-output update so downstream redstone reacts. */
+    private int cachedComparatorSignal = -1;
+
     public YakuGeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.YAKU_GENERATOR_BLOCK_ENTITY.get(), pos, state);
         setupNewRound(RandomSource.create());
@@ -190,6 +195,7 @@ public class YakuGeneratorBlockEntity extends BlockEntity {
         if (level instanceof ServerLevel sl) {
             playTilePlaceSound(sl);
         }
+        invalidateComparatorSignal();
         setChanged();
     }
 
@@ -198,6 +204,144 @@ public class YakuGeneratorBlockEntity extends BlockEntity {
             return;
         }
         applyTsumoResult(actor, evaluateCurrentHand(), true);
+    }
+
+    /** Tsumo entrypoint for automation (no player) — fed by the Tsumo Clicker.
+     *  Win effects and the no-yaku blast still fire; ownership name is anonymous. */
+    public void tsumoAutomated() {
+        if (level == null || level.isClientSide()) {
+            return;
+        }
+        applyTsumoResult(null, evaluateCurrentHand(), true);
+    }
+
+    /**
+     * Rerolls the slot whose removal yields the lowest resulting shanten. With
+     * {@code accuracyPct < 100} there is a {@code (100 - accuracyPct)} percent
+     * chance of picking a uniformly random slot instead — that's how the
+     * cheaper Discard Clicker tiers misplay.
+     *
+     * @return true if a slot was rerolled; false if the round was idle (draws exhausted, etc.)
+     */
+    public boolean discardForClicker(int accuracyPct) {
+        if (level == null || level.isClientSide()) {
+            return false;
+        }
+        int slotCount = getSlotCount();
+        if (slotCount <= 0) return false;
+        int chosen;
+        if (accuracyPct >= 100 || level.random.nextInt(100) < accuracyPct) {
+            chosen = findBestDiscardSlot();
+        } else {
+            chosen = level.random.nextInt(slotCount);
+        }
+        if (chosen < 0) chosen = 0;
+        rerollSlot(chosen);
+        return true;
+    }
+
+    /**
+     * Comparator output: {@code 0} when the current hand is not a valid agari,
+     * otherwise the win's han count clamped to {@code [1, 15]} (yakuman reads
+     * as {@code HAN_FOR_YAKUMAN = 13}). Cached and invalidated whenever tiles
+     * change so the tier-3 evaluator doesn't run on every redstone query.
+     */
+    public int getComparatorSignal() {
+        if (cachedComparatorSignal < 0) {
+            cachedComparatorSignal = computeComparatorSignal();
+        }
+        return cachedComparatorSignal;
+    }
+
+    private int computeComparatorSignal() {
+        if (level == null) return 0;
+        TsumoResult result;
+        try {
+            result = evaluateCurrentHand();
+        } catch (RuntimeException ignored) {
+            return 0;
+        }
+        if (result.han <= 0) return 0;
+        return Math.max(1, Math.min(15, result.han));
+    }
+
+    private void invalidateComparatorSignal() {
+        cachedComparatorSignal = -1;
+        if (level != null && !level.isClientSide()) {
+            level.updateNeighbourForOutputSignal(worldPosition, getBlockState().getBlock());
+        }
+    }
+
+    /** Picks the slot whose removal leaves the remaining hand at the lowest shanten.
+     *  Tiebreaks favor isolated honors/terminals — least-likely-to-help tiles go first. */
+    private int findBestDiscardSlot() {
+        YakuGeneratorBlock.Tier tier = resolveTier();
+        int slotCount = tier.slotCount();
+        boolean useStandard = (tier == YakuGeneratorBlock.Tier.TIER_3);
+        int target = switch (tier) {
+            case TIER_1 -> 1;
+            case TIER_2 -> 3;
+            case TIER_3 -> 0; // unused
+        };
+
+        int[] counts = new int[TILE_KIND_COUNT];
+        for (int i = 0; i < slotCount; i++) {
+            TheMahjongTile t = tiles[i];
+            if (t == null) continue;
+            int code = MahjongTileItems.codeForTile(t);
+            if (code >= 0 && code < TILE_KIND_COUNT) counts[code]++;
+        }
+
+        int bestSlot = 0;
+        int bestShanten = Integer.MAX_VALUE;
+        int bestTiebreak = Integer.MIN_VALUE;
+        for (int i = 0; i < slotCount; i++) {
+            TheMahjongTile t = tiles[i];
+            if (t == null) continue;
+            int code = MahjongTileItems.codeForTile(t);
+            counts[code]--;
+            int s;
+            if (useStandard) {
+                s = ShantenCalculator.shanten(counts);
+            } else {
+                ComboBest best = bestCombos(counts, 0);
+                int combos = best == null ? 0 : best.combos;
+                s = combos >= target ? -1 : (target - combos);
+            }
+            counts[code]++;
+            int tieScore = uselessnessScore(t, counts, code);
+            if (s < bestShanten || (s == bestShanten && tieScore > bestTiebreak)) {
+                bestSlot = i;
+                bestShanten = s;
+                bestTiebreak = tieScore;
+            }
+        }
+        return bestSlot;
+    }
+
+    /** Higher score = more disposable. Isolated honors > isolated terminals > others. */
+    private static int uselessnessScore(TheMahjongTile t, int[] counts, int selfCode) {
+        int score = 0;
+        if (t.honor()) score += 4;
+        if (t.terminal()) score += 2;
+        // Isolation: no neighbors within +/-2 ranks in the same number suit, and
+        // not a pair/triplet with itself.
+        if (counts[selfCode] <= 1) score += 2;
+        if (t.suit().isNumber()) {
+            int suitBase = selfCode - (t.rank() - 1);
+            int rank = t.rank();
+            boolean nearby = false;
+            for (int dr = -2; dr <= 2; dr++) {
+                if (dr == 0) continue;
+                int r2 = rank + dr;
+                if (r2 >= 1 && r2 <= 9) {
+                    int idx = suitBase + (r2 - 1);
+                    if (counts[idx] > 0) { nearby = true; break; }
+                }
+            }
+            if (!nearby) score += 3;
+        }
+        return score;
     }
 
     public void debugTriggerOutcome(ServerPlayer actor, int outcomeIndex) {
@@ -220,7 +364,7 @@ public class YakuGeneratorBlockEntity extends BlockEntity {
         applyTsumoResult(actor, result, false);
     }
 
-    private void applyTsumoResult(ServerPlayer actor, TsumoResult result, boolean setupNewRoundAfterResolution) {
+    private void applyTsumoResult(@Nullable ServerPlayer actor, TsumoResult result, boolean setupNewRoundAfterResolution) {
         lastHan = result.han;
         lastYakuman = result.yakuman;
         if (level instanceof ServerLevel sl) {
@@ -239,10 +383,11 @@ public class YakuGeneratorBlockEntity extends BlockEntity {
             return;
         }
         if (level instanceof ServerLevel serverLevel) {
+            String name = actor != null ? actor.getName().getString() : "Yaku Generator";
             MahjongWinEffects.playWinEffects(
                     serverLevel,
                     actor,
-                    actor.getName().getString(),
+                    name,
                     result.han(),
                     result.yakuman(),
                     result.yakuNames(),
@@ -259,7 +404,7 @@ public class YakuGeneratorBlockEntity extends BlockEntity {
         setChanged();
     }
 
-    private void triggerNoYakuBacklash(ServerPlayer actor) {
+    private void triggerNoYakuBacklash(@Nullable ServerPlayer actor) {
         if (!(level instanceof ServerLevel serverLevel)) {
             return;
         }
@@ -270,15 +415,16 @@ public class YakuGeneratorBlockEntity extends BlockEntity {
         serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, x, y, z, 1, 0.0, 0.0, 0.0, 0.0);
         applyNoYakuBlastDamageAndKnockback(serverLevel, actor, new Vec3(x, y, z));
         if (serverLevel.getServer() != null) {
+            String name = actor != null ? actor.getName().getString() : "A Yaku Generator";
             serverLevel.getServer()
                     .getPlayerList()
                     .broadcastSystemMessage(
-                            Component.literal(actor.getName().getString() + " has no Yaku, what a loser"),
+                            Component.literal(name + " has no Yaku, what a loser"),
                             false);
         }
     }
 
-    private void applyNoYakuBlastDamageAndKnockback(ServerLevel serverLevel, ServerPlayer actor, Vec3 center) {
+    private void applyNoYakuBlastDamageAndKnockback(ServerLevel serverLevel, @Nullable ServerPlayer actor, Vec3 center) {
         AABB area = new AABB(center, center).inflate(NO_YAKU_EFFECT_RADIUS);
         for (LivingEntity entity : serverLevel.getEntitiesOfClass(LivingEntity.class, area, e -> e.isAlive() && !e.isSpectator())) {
             double dx = entity.getX() - center.x;
@@ -438,6 +584,7 @@ public class YakuGeneratorBlockEntity extends BlockEntity {
             RandomSource random = level != null ? level.random : RandomSource.create();
             setupNewRound(random);
         }
+        invalidateComparatorSignal();
     }
 
     @Override
@@ -483,6 +630,7 @@ public class YakuGeneratorBlockEntity extends BlockEntity {
         }
         drawsUsed = 0;
         sortActiveSlots();
+        invalidateComparatorSignal();
     }
 
     private void sortActiveSlots() {

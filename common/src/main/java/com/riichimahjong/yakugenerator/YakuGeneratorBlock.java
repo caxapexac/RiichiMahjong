@@ -152,6 +152,20 @@ public class YakuGeneratorBlock extends BaseEntityBlock {
         return tier;
     }
 
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof YakuGeneratorBlockEntity machine) {
+            return machine.getComparatorSignal();
+        }
+        return 0;
+    }
+
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {

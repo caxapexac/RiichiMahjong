@@ -8,9 +8,7 @@
     "HudHideNormalizeFovMixin",
     "InventoryHideNormalizeFovMixin"
   ],
-  "mixins": [
-    "MobFinalizeSpawnMixin"
-  ],
+  "mixins": [],
   "injectors": {
     "defaultRequire": 1
   }

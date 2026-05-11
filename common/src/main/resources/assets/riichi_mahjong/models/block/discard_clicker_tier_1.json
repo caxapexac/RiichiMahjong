@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top":   "riichi_mahjong:block/discard_clicker_tier_1_top",
+    "front": "riichi_mahjong:block/discard_clicker_tier_1_front",
+    "side":  "riichi_mahjong:block/discard_clicker_tier_1_side"
+  }
+}

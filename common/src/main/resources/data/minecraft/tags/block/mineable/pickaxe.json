@@ -5,6 +5,10 @@
     "riichi_mahjong:yaku_generator_tier_1",
     "riichi_mahjong:yaku_generator_tier_2",
     "riichi_mahjong:yaku_generator_tier_3",
-    "riichi_mahjong:fov_normalizer"
+    "riichi_mahjong:fov_normalizer",
+    "riichi_mahjong:discard_clicker_tier_1",
+    "riichi_mahjong:discard_clicker_tier_2",
+    "riichi_mahjong:discard_clicker_tier_3",
+    "riichi_mahjong:tsumo_clicker"
   ]
 }

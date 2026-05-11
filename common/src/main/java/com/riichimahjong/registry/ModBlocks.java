@@ -79,6 +79,43 @@ public final class ModBlocks {
             "yaku_generator_tier_3",
             () -> new BlockItem(YAKU_GENERATOR_TIER_3.get(), new Item.Properties()));
 
+    public static final RegistrySupplier<Block> DISCARD_CLICKER_TIER_1 = BLOCKS.register(
+            "discard_clicker_tier_1",
+            () -> new com.riichimahjong.clickers.DiscardClickerBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL).strength(3.0f, 5.0f).sound(SoundType.METAL),
+                    com.riichimahjong.clickers.DiscardClickerBlock.Tier.TIER_1));
+    public static final RegistrySupplier<Block> DISCARD_CLICKER_TIER_2 = BLOCKS.register(
+            "discard_clicker_tier_2",
+            () -> new com.riichimahjong.clickers.DiscardClickerBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL).strength(3.0f, 5.0f).sound(SoundType.METAL),
+                    com.riichimahjong.clickers.DiscardClickerBlock.Tier.TIER_2));
+    public static final RegistrySupplier<Block> DISCARD_CLICKER_TIER_3 = BLOCKS.register(
+            "discard_clicker_tier_3",
+            () -> new com.riichimahjong.clickers.DiscardClickerBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL).strength(3.0f, 5.0f).sound(SoundType.METAL),
+                    com.riichimahjong.clickers.DiscardClickerBlock.Tier.TIER_3));
+
+    public static final RegistrySupplier<Item> DISCARD_CLICKER_TIER_1_ITEM = ModItems.ITEMS.register(
+            "discard_clicker_tier_1",
+            () -> new com.riichimahjong.clickers.DiscardClickerItem(DISCARD_CLICKER_TIER_1.get(),
+                    com.riichimahjong.clickers.DiscardClickerBlock.Tier.TIER_1, new Item.Properties()));
+    public static final RegistrySupplier<Item> DISCARD_CLICKER_TIER_2_ITEM = ModItems.ITEMS.register(
+            "discard_clicker_tier_2",
+            () -> new com.riichimahjong.clickers.DiscardClickerItem(DISCARD_CLICKER_TIER_2.get(),
+                    com.riichimahjong.clickers.DiscardClickerBlock.Tier.TIER_2, new Item.Properties()));
+    public static final RegistrySupplier<Item> DISCARD_CLICKER_TIER_3_ITEM = ModItems.ITEMS.register(
+            "discard_clicker_tier_3",
+            () -> new com.riichimahjong.clickers.DiscardClickerItem(DISCARD_CLICKER_TIER_3.get(),
+                    com.riichimahjong.clickers.DiscardClickerBlock.Tier.TIER_3, new Item.Properties()));
+
+    public static final RegistrySupplier<Block> TSUMO_CLICKER = BLOCKS.register(
+            "tsumo_clicker",
+            () -> new com.riichimahjong.clickers.TsumoClickerBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL).strength(3.0f, 5.0f).sound(SoundType.METAL)));
+    public static final RegistrySupplier<Item> TSUMO_CLICKER_ITEM = ModItems.ITEMS.register(
+            "tsumo_clicker",
+            () -> new com.riichimahjong.clickers.TsumoClickerItem(TSUMO_CLICKER.get(), new Item.Properties()));
+
     public static final RegistrySupplier<Block> FOV_NORMALIZER = BLOCKS.register(
             "fov_normalizer",
             () -> new com.riichimahjong.fovnormalizer.FovNormalizerBlock(BlockBehaviour.Properties.of()

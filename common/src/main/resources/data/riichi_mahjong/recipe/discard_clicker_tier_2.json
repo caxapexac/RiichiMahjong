@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "III",
+    "RDR",
+    "III"
+  ],
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "R": { "item": "minecraft:redstone_block" },
+    "D": { "item": "riichi_mahjong:discard_clicker_tier_1" }
+  },
+  "result": {
+    "id": "riichi_mahjong:discard_clicker_tier_2"
+  }
+}
